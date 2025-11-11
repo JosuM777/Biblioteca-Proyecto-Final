@@ -7,7 +7,18 @@ class Usuario(AbstractUser):
 
 
 class Libro(models.Model):
+    ELECCIONES_LIBRO = (
+        ("prestado", "Prestado"),
+        ("ventade", "Venta"),
+        ("alquiler", "Alquiler"),
+    )
     titulo = models.CharField(max_length=20)
+    autor = models.CharField(max_length=50)
+    isbn = models.CharField(max_length=13)
+    disponible = models.BooleanField(default=True)
+    precio = models.DecimalField(max_digits=6, decimal_places=2)
+    eleccion_libro = models.CharField(max_length=10, choices=ELECCIONES_LIBRO, default="prestado")
+
     
     
 class Alquiler(models.Model):
