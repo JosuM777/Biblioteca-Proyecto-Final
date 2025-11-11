@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/home.css";
+import Boton from '../components/EditUser'
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
           <h1>Bienvenido a <span className="brand">ReBook</span></h1>
           <p>Descubre, comparte y alquila libros con otros lectores.</p>
           <Link to="/catalog" className="btn-primary">Explorar Libros</Link>
+          <Link to="/EditarUsuario" className="btn-editar">Editar tu Usuario</Link>
         </div>
       </section>
 
