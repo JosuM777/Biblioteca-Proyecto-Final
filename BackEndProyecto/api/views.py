@@ -35,6 +35,18 @@ class RegisterView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
         
+        if Usuario.objects.filter(num_telefono=num_telefono).exists():
+            return Response(
+                {"error:El número de teléfono ya existe"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        if Usuario.objects.filter(direccion=direccion).exists():
+            return Response(
+                {"error:La dirección ya existe"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
         usuario = Usuario.objects.create_user(
             username=username,
             email=email,
@@ -63,19 +75,81 @@ class LoginView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(
-                {"error": "Credenciales inválidas"},
+                {"error": "Credenciales Incorrectas"},
                 status=status.HTTP_401_UNAUTHORIZED
             )
 
 class LibroListCreateView(ListCreateAPIView):
     queryset = Libro.objects.all()
     serializer_class = LibroSerializer
+
+    # Validaciones personalizadas al crear un libro
+    def create(self, request, *args, **kwargs):
+        data = request.data
+
+        if not data.get('titulo'):
+            return Response({'titulo': 'El título es obligatorio.'}, status=status.HTTP_400_BAD_REQUEST)
+        if not data.get('autor'):
+            return Response({'autor': 'Debe indicar un autor.'}, status=status.HTTP_400_BAD_REQUEST)
+        if not data.get('precio') or float(data['precio']) <= 0:
+            return Response({'precio': 'El precio debe ser mayor a 0.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Evitar duplicados
+        if Libro.objects.filter(titulo=data['titulo'], autor=data['autor']).exists():
+            return Response({'error': 'Ya existe un libro con ese título y autor.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        return super().create(request, *args, **kwargs)
+
+
 class LibroDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Libro.objects.all()
     serializer_class = LibroSerializer
+
+    # Evita eliminar libros alquilados o vendidos
+    def destroy(self, request, *args, **kwargs):
+        libro = self.get_object()
+        if libro.estado in ['alquilado', 'vendido']:
+            return Response(
+                {"error": "No se puede eliminar un libro alquilado o vendido."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        return super().destroy(request, *args, **kwargs)
+
+
 class AlquilerListCreateView(ListCreateAPIView):
     queryset = Alquiler.objects.all()
     serializer_class = AlquilerSerializer
+
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        libro_id = data.get('libro')
+
+        if not libro_id:
+            return Response({'libro': 'Debe seleccionar un libro.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            libro = Libro.objects.get(id=libro_id)
+        except Libro.DoesNotExist:
+            return Response({'error': 'El libro no existe.'}, status=status.HTTP_404_NOT_FOUND)
+
+        if libro.estado == 'vendido':
+            return Response({'error': 'El libro ya fue vendido.'}, status=status.HTTP_400_BAD_REQUEST)
+        if libro.estado == 'alquilado':
+            return Response({'error': 'El libro ya está alquilado.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Cambiar el estado del libro automáticamente
+        libro.estado = 'alquilado'
+        libro.save()
+
+        return super().create(request, *args, **kwargs)
+
+
 class AlquilerDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Alquiler.objects.all()
     serializer_class = AlquilerSerializer
+
+    def perform_destroy(self, instance):
+        libro = instance.libro
+        libro.estado = 'disponible'
+        libro.save()
+        instance.delete()
