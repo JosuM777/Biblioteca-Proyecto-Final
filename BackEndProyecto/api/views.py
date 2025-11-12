@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from .serializers import UsuarioSerializer
-from .models import Usuario
-from rest_framework.generics import ListCreateAPIView
+from .serializers import UsuarioSerializer,LibroSerializer,AlquilerSerializer
+from .models import Usuario,Libro,Alquiler
+from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -66,3 +66,16 @@ class LoginView(APIView):
                 {"error": "Credenciales inválidas"},
                 status=status.HTTP_401_UNAUTHORIZED
             )
+
+class LibroListCreateView(ListCreateAPIView):
+    queryset = Libro.objects.all()
+    serializer_class = LibroSerializer
+class LibroDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = Libro.objects.all()
+    serializer_class = LibroSerializer
+class AlquilerListCreateView(ListCreateAPIView):
+    queryset = Alquiler.objects.all()
+    serializer_class = AlquilerSerializer
+class AlquilerDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = Alquiler.objects.all()
+    serializer_class = AlquilerSerializer
