@@ -79,9 +79,16 @@ class LoginView(APIView):
                 status=status.HTTP_401_UNAUTHORIZED
             )
 
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
+
 class LibroListCreateView(ListCreateAPIView):
     queryset = Libro.objects.all()
     serializer_class = LibroSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['estado', 'genero']  # Puedes filtrar por estado o género
+    search_fields = ['titulo', 'autor_o_editorial', 'descripcion']  # Búsqueda general
+    ordering_fields = ['precio', 'titulo']
 
     # Validaciones personalizadas al crear un libro
     def create(self, request, *args, **kwargs):
@@ -89,16 +96,23 @@ class LibroListCreateView(ListCreateAPIView):
 
         if not data.get('titulo'):
             return Response({'titulo': 'El título es obligatorio.'}, status=status.HTTP_400_BAD_REQUEST)
-        if not data.get('autor'):
-            return Response({'autor': 'Debe indicar un autor.'}, status=status.HTTP_400_BAD_REQUEST)
+        if not data.get('autor_o_editorial'):
+            return Response({'autor_o_editorial': 'Debe indicar un autor o editorial.'}, status=status.HTTP_400_BAD_REQUEST)
         if not data.get('precio') or float(data['precio']) <= 0:
             return Response({'precio': 'El precio debe ser mayor a 0.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Evitar duplicados
-        if Libro.objects.filter(titulo=data['titulo'], autor=data['autor']).exists():
-            return Response({'error': 'Ya existe un libro con ese título y autor.'}, status=status.HTTP_400_BAD_REQUEST)
+        # Evitar duplicados (por título y autor/editorial)
+        if Libro.objects.filter(
+            titulo=data['titulo'],
+            autor_o_editorial=data['autor_o_editorial']
+        ).exists():
+            return Response(
+                {'error': 'Ya existe un libro con ese título y autor/editorial.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         return super().create(request, *args, **kwargs)
+
 
 
 class LibroDetailView(RetrieveUpdateDestroyAPIView):
@@ -114,6 +128,7 @@ class LibroDetailView(RetrieveUpdateDestroyAPIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
         return super().destroy(request, *args, **kwargs)
+    
 
 
 class AlquilerListCreateView(ListCreateAPIView):
@@ -148,6 +163,7 @@ class AlquilerDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Alquiler.objects.all()
     serializer_class = AlquilerSerializer
 
+    # Cuando se elimina un alquiler, el libro vuelve a estar disponible
     def perform_destroy(self, instance):
         libro = instance.libro
         libro.estado = 'disponible'

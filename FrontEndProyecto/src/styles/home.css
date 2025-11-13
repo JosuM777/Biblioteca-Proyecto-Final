@@ -1,90 +1,207 @@
+/* 🎨 BASE */
 .home {
-  background-color: #fafafa;
-  color: #222;
+  background-color: #f9fafb;
+  color: #1e293b;
   font-family: "Poppins", sans-serif;
+  line-height: 1.6;
 }
 
+/* 🦸 HERO SECTION */
 .hero {
-  background: linear-gradient(to right, #0f172a, #1e3a8a);
-  color: white;
+  background: linear-gradient(135deg, #0f172a, #1e3a8a);
+  color: #fff;
   text-align: center;
-  padding: 100px 20px;
+  padding: 120px 20px 100px;
+  position: relative;
+  overflow: hidden;
 }
+
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: radial-gradient(circle at 30% 50%, rgba(96,165,250,0.25), transparent 60%);
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
+
 .hero .brand {
   color: #60a5fa;
+  font-weight: 700;
 }
+
 .hero-content h1 {
-  font-size: 2.8rem;
-  margin-bottom: 0.5rem;
+  font-size: 3rem;
+  margin-bottom: 0.7rem;
+  text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2);
 }
+
 .hero-content p {
   font-size: 1.2rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  color: #e2e8f0;
 }
+
 .btn-primary {
-  background: #3b82f6;
-  padding: 10px 18px;
-  color: white;
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+  padding: 12px 24px;
+  color: #fff;
   text-decoration: none;
-  border-radius: 8px;
-  font-weight: 500;
+  border-radius: 10px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: inline-block;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
 }
+
 .btn-primary:hover {
-  background: #2563eb;
+  background: linear-gradient(90deg, #2563eb, #1d4ed8);
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.5);
 }
 
+/* 📚 SECTIONS */
 .section {
-  padding: 50px 10%;
-}
-.section h2 {
-  font-size: 1.8rem;
-  margin-bottom: 1.2rem;
-  color: #1e3a8a;
+  padding: 70px 8%;
 }
 
+.section h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #1e3a8a;
+  text-align: center;
+  position: relative;
+}
+
+.section h2::after {
+  content: "";
+  width: 60px;
+  height: 3px;
+  background: #3b82f6;
+  display: block;
+  margin: 10px auto 0;
+  border-radius: 10px;
+}
+
+/* 🧱 BOOK GRID */
 .book-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-}
-.book-card {
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-  text-align: center;
-  transition: transform 0.2s ease;
-}
-.book-card:hover {
-  transform: translateY(-5px);
-}
-.book-card img {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 25px;
+  justify-content: center;
 }
 
+.book-card {
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  padding: 18px;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.book-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.book-card img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  transition: transform 0.3s ease;
+}
+
+.book-card:hover img {
+  transform: scale(1.04);
+}
+
+.book-card h3 {
+  font-size: 1.1rem;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.book-card p {
+  font-size: 0.95rem;
+  color: #475569;
+  margin-bottom: 0.3rem;
+}
+
+.book-card .price {
+  font-weight: 600;
+  color: #2563eb;
+  font-size: 1rem;
+}
+
+/* 🎭 BOOK STATUS */
+.status {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+.status.disponible {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status.alquilado {
+  background: #fef9c3;
+  color: #92400e;
+}
+
+.status.vendido {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* 🎨 GENRES */
 .genre-grid {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
   justify-content: center;
 }
+
 .genre {
   background: #e0e7ff;
   color: #1e3a8a;
   padding: 12px 25px;
   border-radius: 25px;
   font-weight: 500;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
+  cursor: pointer;
 }
+
 .genre:hover {
   background: #3b82f6;
   color: white;
+  transform: scale(1.05);
 }
 
-.upcoming {
-  opacity: 0.85;
+/* 📱 RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+
+  .section {
+    padding: 50px 6%;
+  }
+
+  .book-card img {
+    height: 220px;
+  }
 }

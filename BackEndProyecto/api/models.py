@@ -6,18 +6,29 @@ class Usuario(AbstractUser):
     direccion = models.CharField(max_length=255)
 
 
+from django.db import models
+
 class Libro(models.Model):
-    ELECCIONES_LIBRO = (
-        ("prestado", "Prestado"),
-        ("ventade", "Venta"),
-        ("alquiler", "Alquiler"),
+    titulo = models.CharField(max_length=255)
+    descripcion = models.TextField()
+    autor_o_editorial = models.CharField(max_length=255)
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+    genero = models.CharField(max_length=100)
+    estado = models.CharField(
+        max_length=20,
+        choices=[
+            ('disponible', 'Disponible'),
+            ('alquilado', 'Alquilado'),
+            ('vendido', 'Vendido'),
+        ],
+        default='disponible'
     )
-    titulo = models.CharField(max_length=20)
-    autor = models.CharField(max_length=50)
-    isbn = models.CharField(max_length=13)
-    disponible = models.BooleanField(default=True)
-    precio = models.DecimalField(max_digits=6, decimal_places=2)
-    eleccion_libro = models.CharField(max_length=10, choices=ELECCIONES_LIBRO, default="prestado")
+    imagen = models.ImageField(upload_to='libros/', blank=True, null=True)
+
+    def __str__(self):
+        return self.titulo
+
+
 
     
     

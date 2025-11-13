@@ -2,7 +2,7 @@ from django.urls import path
 from .views import UsuarioCreateView
 from .views import RegisterView
 from .views import RegisterView, LoginView
-from .views import AlquilerListCreateView, AlquilerDetailView
+from .views import AlquilerListCreateView, AlquilerDetailView ,LibroListCreateView
 
 urlpatterns = [
     path('auth/register/', RegisterView.as_view(), name='register'),
@@ -11,4 +11,5 @@ urlpatterns = [
          name='alquiler-list-create'),
     path('alquileres/<int:pk>/', AlquilerDetailView.as_view(),
          name='alquiler-detail'),
+          path('libros/', LibroListCreateView.as_view(), name='libros'),
 ]

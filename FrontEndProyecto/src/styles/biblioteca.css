@@ -1,0 +1,185 @@
+/* === LAYOUT GENERAL === */
+.biblioteca-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 30px;
+  padding: 40px;
+  min-height: 100vh;
+  background: #fafafa;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* === SIDEBAR DE FILTROS === */
+.sidebar-filtros {
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  border-radius: 12px;
+  padding: 20px;
+  height: fit-content;
+  position: sticky;
+  top: 30px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+}
+
+.sidebar-filtros h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: #222;
+}
+
+.sidebar-filtros input,
+.sidebar-filtros select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #f9f9f9;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.sidebar-filtros input:focus,
+.sidebar-filtros select:focus {
+  border-color: #007bff;
+  background: #fff;
+}
+
+/* === CONTENEDOR PRINCIPAL === */
+.biblioteca-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.biblioteca-main h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-bottom: 25px;
+  letter-spacing: 0.5px;
+  text-align: left;
+}
+
+/* === GRID DE LIBROS === */
+.libros-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+/* === TARJETA DE LIBRO === */
+.libro-card {
+  position: relative;
+  background: #fff;
+  border: 1px solid #e9e9e9;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.libro-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+/* === IMAGEN === */
+.libro-img {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  background-color: #f2f2f2;
+}
+
+/* === INFORMACIÓN === */
+.libro-info {
+  padding: 16px 18px;
+  flex-grow: 1;
+}
+
+.libro-info h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+.libro-info p {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 4px 0;
+}
+
+.libro-info .desc {
+  margin-top: 8px;
+  color: #666;
+  font-size: 0.88rem;
+  line-height: 1.3;
+  height: 48px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.libro-info strong {
+  color: #222;
+}
+
+.libro-info .precio {
+  font-weight: 700;
+  color: #007bff;
+}
+
+/* === ESTADO === */
+.libro-estado {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #fff;
+  text-transform: capitalize;
+}
+
+.libro-estado.disponible { background-color: #2ecc71; }
+.libro-estado.alquilado { background-color: #f1c40f; color: #333; }
+.libro-estado.vendido { background-color: #e74c3c; }
+
+/* === SIN RESULTADOS === */
+.sin-resultados {
+  font-size: 1rem;
+  color: #888;
+  text-align: center;
+  padding: 40px 0;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 1024px) {
+  .biblioteca-layout {
+    grid-template-columns: 220px 1fr;
+    padding: 30px 20px;
+  }
+  .libros-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .biblioteca-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar-filtros {
+    position: static;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .libros-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+}

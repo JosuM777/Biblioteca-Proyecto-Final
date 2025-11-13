@@ -10,6 +10,8 @@ export default function Header() {
         <Link to="/">Inicio</Link>
         <Link to="/login">Iniciar sesión</Link>
         <Link to="/register">Registro</Link>
+        <Link to="/biblioteca">Biblioteca</Link>
+        <Link to="/crearlibro">Creador</Link>
       </nav>
     </header>
   );
