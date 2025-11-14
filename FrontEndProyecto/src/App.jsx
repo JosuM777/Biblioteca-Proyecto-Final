@@ -5,9 +5,10 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import EditarUsuario from './pages/EditarUsuario';
-import CrearLibro from "./components/CrearLibro";
 import Biblioteca from "./pages/Biblioteca";
+import CrearLibro from "./components/CrearLibro";
+import MiCuenta from "./pages/MiCuenta";
+import EditarPerfil from "./components/EditarPerfil"; 
 
 
 export default function App() {
@@ -20,9 +21,10 @@ export default function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/EditarUsuario" element={<EditarUsuario />} />
-            <Route path="/crearlibro" element={<CrearLibro />} />
+            <Route path="/crear-libro" element={<CrearLibro />} />
             <Route path="/biblioteca" element={<Biblioteca />} />
+            <Route path="/account" element={<MiCuenta />} />
+            <Route path="/editar-perfil" element={<EditarPerfil />} />
 
           </Routes>
         </main>

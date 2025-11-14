@@ -28,11 +28,11 @@ class UsuarioSerializer(serializers.ModelSerializer):
         return representation
             
         
-class LibroSerializer(ModelSerializer):
+class LibroSerializer(serializers.ModelSerializer):
     class Meta:
         model = Libro
-        fields = '__all__'
-
+        fields = "__all__"
+        read_only_fields = ["creador"]
 class AlquilerSerializer(ModelSerializer):
     class Meta:
         model = Alquiler

@@ -5,6 +5,7 @@ from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIVi
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import viewsets
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate
 
@@ -62,6 +63,7 @@ class RegisterView(APIView):
             {"message": "Usuario registrado exitosamente"},
             status=status.HTTP_201_CREATED
         )
+    
             
     
 class LoginView(APIView):
@@ -70,6 +72,7 @@ class LoginView(APIView):
         password = request.data.get("password")
 
         user = authenticate(username=username, password=password)
+
         if user is not None:
             serializer = UsuarioSerializer(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -89,6 +92,12 @@ class LibroListCreateView(ListCreateAPIView):
     filterset_fields = ['estado', 'genero']  # Puedes filtrar por estado o género
     search_fields = ['titulo', 'autor_o_editorial', 'descripcion']  # Búsqueda general
     ordering_fields = ['precio', 'titulo']
+
+    def get_queryset(self):
+        usuario_id = self.request.query_params.get("usuario")
+        if usuario_id:
+            return Libro.objects.filter(usuario_id=usuario_id)
+        return Libro.objects.all()
 
     # Validaciones personalizadas al crear un libro
     def create(self, request, *args, **kwargs):
@@ -169,3 +178,12 @@ class AlquilerDetailView(RetrieveUpdateDestroyAPIView):
         libro.estado = 'disponible'
         libro.save()
         instance.delete()
+
+class LibroViewSet(viewsets.ModelViewSet):
+    queryset = Libro.objects.all()
+    serializer_class = LibroSerializer
+
+    def perform_create(self, serializer):
+        """ Guardar el creador automáticamente """
+        usuario = self.request.user
+        serializer.save(creador=usuario)

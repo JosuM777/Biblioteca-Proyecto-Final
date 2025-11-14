@@ -10,6 +10,9 @@ export default function AppRouter() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/biblioteca" element={<Biblioteca />} />
+      <Route path="/account" element={<MiCuenta />} />
     </Routes>
   );
 }

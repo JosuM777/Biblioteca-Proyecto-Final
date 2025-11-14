@@ -6,10 +6,9 @@ from .views import AlquilerListCreateView, AlquilerDetailView ,LibroListCreateVi
 
 urlpatterns = [
     path('auth/register/', RegisterView.as_view(), name='register'),
-    path('auth/login/', LoginView.as_view(), name='login'),
-       path('alquileres/', AlquilerListCreateView.as_view(),
-         name='alquiler-list-create'),
-    path('alquileres/<int:pk>/', AlquilerDetailView.as_view(),
-         name='alquiler-detail'),
-          path('libros/', LibroListCreateView.as_view(), name='libros'),
+    path("login/", LoginView.as_view(), name="login"),      
+    path('alquileres/', AlquilerListCreateView.as_view(), name='alquiler-list-create'),
+    path('alquileres/<int:pk>/', AlquilerDetailView.as_view(),name='alquiler-detail'),
+    path('libros/', LibroListCreateView.as_view(), name='libros'),
+    path('usuarios/', UsuarioCreateView.as_view(), name='usuario-create'),
 ]

@@ -6,6 +6,7 @@ class Usuario(AbstractUser):
     direccion = models.CharField(max_length=255)
 
 
+
 from django.db import models
 
 class Libro(models.Model):
@@ -25,9 +26,15 @@ class Libro(models.Model):
     )
     imagen = models.ImageField(upload_to='libros/', blank=True, null=True)
 
+    # usuario que creó el libro
+    creador = models.ForeignKey(
+        "Usuario",
+        on_delete=models.CASCADE,
+        related_name="libros_creados"
+    )
+
     def __str__(self):
         return self.titulo
-
 
 
     

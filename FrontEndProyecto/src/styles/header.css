@@ -30,60 +30,65 @@
   transform: scale(1.05);
 }
 
-/* ======= NAV ======= */
-.nav {
+/* ======= CONTENEDOR NAV ======= */
+.nav-links {
   display: flex;
   align-items: center;
-  gap: 25px;
+  gap: 20px;
 }
 
-.nav a {
+/* ======= BOTONES NAV ======= */
+.nav-btn {
+  background: transparent;
   color: #f1f5f9;
-  text-decoration: none;
+  border: 1px solid transparent;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
   font-weight: 500;
-  font-size: 1rem;
-  padding: 8px 14px;
-  border-radius: 8px;
-  position: relative;
-  transition: all 0.3s ease;
 }
 
-/* Animación de subrayado al pasar el mouse */
-.nav a::after {
-  content: "";
-  position: absolute;
-  width: 0;
-  height: 2px;
-  bottom: 4px;
-  left: 50%;
-  background-color: #60a5fa;
-  transition: all 0.3s ease;
-  transform: translateX(-50%);
-}
-
-.nav a:hover::after {
-  width: 80%;
-}
-
-.nav a:hover {
-  color: #60a5fa;
+/* Hover elegante */
+.nav-btn:hover {
   background-color: rgba(255, 255, 255, 0.08);
+  color: #60a5fa;
   transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.15);
 }
 
-/* ======= BOTÓN DESTACADO (Ej. Crear Libro) ======= */
-.nav .btn-primary {
+/* ======= BOTÓN DESTACADO ======= */
+.btn-primary {
   background-color: #60a5fa;
-  color: #0f172a;
+  color: #0f172a !important;
   font-weight: 600;
   padding: 8px 16px;
   border-radius: 10px;
   transition: all 0.3s ease;
 }
 
-.nav .btn-primary:hover {
+.btn-primary:hover {
   background-color: #3b82f6;
+  color: white !important;
+  transform: scale(1.05);
+}
+
+/* ======= BOTÓN CERRAR SESIÓN ======= */
+.btn-logout {
+  background: #e63946;
   color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: 0.3s ease;
+  font-weight: 600;
+}
+
+.btn-logout:hover {
+  background: #c92c3c;
   transform: scale(1.05);
 }
 
@@ -91,27 +96,24 @@
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
+    gap: 14px;
     padding: 12px 4%;
   }
 
   .logo {
     font-size: 1.6rem;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
-  .nav {
+  .nav-links {
     flex-direction: column;
-    gap: 12px;
+    width: 100%;
   }
 
-  .nav a {
-    font-size: 1rem;
+  .nav-btn, 
+  .btn-primary,
+  .btn-logout {
     width: 100%;
     text-align: center;
-    padding: 10px;
-  }
-
-  .nav .btn-primary {
-    width: 100%;
   }
 }

@@ -1,17 +1,56 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../styles/header.css";
 
 export default function Header() {
+  const navigate = useNavigate();
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+
+  const cerrarSesion = () => {
+    localStorage.removeItem("usuario");
+    alert("Sesión cerrada");
+    navigate("/login");
+  };
+
   return (
     <header className="header">
-      <h1 className="logo">ReBook</h1>
-      <nav className="nav">
-        <Link to="/">Inicio</Link>
-        <Link to="/login">Iniciar sesión</Link>
-        <Link to="/register">Registro</Link>
-        <Link to="/biblioteca">Biblioteca</Link>
-        <Link to="/crearlibro">Creador</Link>
+      <h1 className="logo" onClick={() => navigate("/")}>ReBook</h1>
+
+      <nav className="nav-links">
+
+        <button className="nav-btn" onClick={() => navigate("/")}>
+          Inicio
+        </button>
+
+        <button className="nav-btn" onClick={() => navigate("/biblioteca")}>
+          Biblioteca
+        </button>
+
+        <button className="nav-btn" onClick={() => navigate("/crear-libro")}>
+          Crear Libro
+        </button>
+
+        {usuario ? (
+          <>
+            <button className="nav-btn" onClick={() => navigate("/account")}>
+              Mi Cuenta
+            </button>
+
+            <button className="btn-logout" onClick={cerrarSesion}>
+              Cerrar sesión
+            </button>
+          </>
+        ) : (
+          <>
+            <button className="nav-btn" onClick={() => navigate("/login")}>
+              Iniciar Sesión
+            </button>
+
+            <button className="nav-btn" onClick={() => navigate("/register")}>
+              Registrarse
+            </button>
+          </>
+        )}
       </nav>
     </header>
   );

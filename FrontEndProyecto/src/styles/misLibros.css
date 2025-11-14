@@ -1,0 +1,200 @@
+/* ===== CONTENEDOR PRINCIPAL ===== */
+
+.mislibros-container {
+  margin-top: 30px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* ===== HEADER ===== */
+
+.mislibros-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.mislibros-header h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.btn-crear {
+  background: #007bff;
+  padding: 8px 14px;
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: 0.2s ease;
+}
+
+.btn-crear:hover {
+  background: #0062cc;
+}
+
+/* ===== GRID ===== */
+
+.mislibros-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+/* ===== CARD ===== */
+
+.mislibros-card {
+  background: #fdfdfd;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  transition: 0.25s ease;
+}
+
+.mislibros-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+
+/* ===== IMAGEN ===== */
+
+.mislibros-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* ===== INFORMACIÓN ===== */
+
+.mislibros-info {
+  margin-top: 10px;
+}
+
+.mislibros-info h3 {
+  font-size: 1.2rem;
+  margin-bottom: 6px;
+  color: #222;
+}
+
+.autor {
+  color: #777;
+  font-size: 0.9rem;
+}
+
+.genero {
+  color: #444;
+  font-size: 0.9rem;
+}
+
+.precio {
+  font-weight: 700;
+  color: #007bff;
+  margin-top: 8px;
+}
+
+/* ===== ESTADO ===== */
+
+.estado {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  color: #fff;
+  text-transform: capitalize;
+}
+
+.estado.disponible { background: #2ecc71; }
+.estado.alquilado  { background: #f1c40f; color: #333; }
+.estado.vendido    { background: #e74c3c; }
+
+/* ===== BOTONES DENTRO DE LA TARJETA ===== */
+
+.botones-libro {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+}
+
+.botones-libro a,
+.botones-libro button {
+  background: #e9ecef;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn-detalle:hover {
+  background: #ced4da;
+}
+
+.btn-editar {
+  background: #007bff;
+  color: #fff;
+}
+.btn-editar:hover {
+  background: #0062cc;
+}
+
+.btn-eliminar {
+  background: #e74c3c;
+  color: #fff;
+}
+.btn-eliminar:hover {
+  background: #c0392b;
+}
+
+/* ===== BOTONES DE ESTADO ===== */
+
+.estado-botones {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+}
+
+.btn-estado {
+  flex: 1;
+  margin: 0 4px;
+  border: none;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  color: #fff;
+}
+
+.disponible-btn { background: #27ae60; }
+.vendido-btn    { background: #c0392b; }
+.alquilado-btn  { background: #f1c40f; color: #333; }
+
+.btn-estado:hover {
+  opacity: 0.8;
+}
+
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 900px) {
+  .mislibros-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .mislibros-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mislibros-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+}

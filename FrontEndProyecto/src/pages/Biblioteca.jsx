@@ -76,13 +76,13 @@ export default function Biblioteca() {
         <h1> Biblioteca ReBook</h1>
         <div className="libros-grid">
           {librosFiltrados.length === 0 ? (
-            <p className="sin-resultados">No se encontraron libros 😕</p>
+            <p className="sin-resultados">No se encontraron libros </p>
           ) : (
             librosFiltrados.map((libro) => (
               <div key={libro.id} className={`libro-card ${libro.estado}`}>
                 {libro.imagen && (
                   <img
-                    src={`http://localhost:8000${libro.imagen}`}
+                    src={libro.imagen}
                     alt={libro.titulo}
                     className="libro-img"
                   />

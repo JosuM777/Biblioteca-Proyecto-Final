@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../styles/home.css";
-import Boton from '../components/EditUser'
 
 export default function Home() {
   return (
