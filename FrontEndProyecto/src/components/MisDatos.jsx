@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function MisDatos() {
   const navigate = useNavigate();
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const [usuario, setUsuario] = useState(null);
+
+  // Aquí defines el ID del usuario actual (puede venir de contexto, props, o sesión)
+  const idUsuario = 1; // ← Reemplaza esto con la fuente real del ID si lo tienes
+
+  useEffect(() => {
+    axios.get(`http://localhost:8000/api/usuarios/${idUsuario}/`)
+      .then(res => setUsuario(res.data))
+      .catch(err => console.error("Error al cargar usuario:", err));
+  }, [idUsuario]);
 
   const irEditarPerfil = () => navigate("/editar-perfil");
 
-  if (!usuario) return <p>No has iniciado sesión.</p>;
+  if (!usuario) return <p>Cargando datos del usuario...</p>;
 
   return (
     <div className="misdatos-card">

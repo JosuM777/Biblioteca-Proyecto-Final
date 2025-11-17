@@ -1,38 +1,40 @@
 from rest_framework.serializers import ModelSerializer
-from .models import Usuario,Libro,Alquiler
-from rest_framework import serializers
+from .models import Usuario, Libro, Alquiler
 
 
-class UsuarioSerializer(serializers.ModelSerializer):
+class UsuarioSerializer(ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'num_telefono', 'direccion']
+        fields = ['id', 'username', 'email', 'first_name',
+                  'last_name', 'num_telefono', 'direccion', 'password']
         extra_kwargs = {
-            'num_telefono': {'write_only': True},
-            'direccion': {'write_only': True},
-            'password': {'write_only': True},
+            'password': {'write_only': True}
         }
 
-    def to_representation(self, instance):
-        """Muestra datos limitados si no es el mismo usuario"""
-        representation = super().to_representation(instance)
+    def create(self, validated_data):
+        password = validated_data.pop('password')
+        user = Usuario(**validated_data)
+        user.set_password(password)
+        user.save()
+        return user
 
-        request = self.context.get('request')
-        if request and request.user != instance:
-            # Ocultar info privada a otros usuarios
-            representation.pop('num_telefono', None)
-            representation.pop('direccion', None)
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        if password:
+            instance.set_password(password)
+        instance.save()
+        return instance
 
-        # Nunca mostrar la contraseña
-        representation.pop('password', None)
-        return representation
-            
-        
-class LibroSerializer(serializers.ModelSerializer):
+
+class LibroSerializer(ModelSerializer):
     class Meta:
         model = Libro
         fields = "__all__"
         read_only_fields = ["creador"]
+
+
 class AlquilerSerializer(ModelSerializer):
     class Meta:
         model = Alquiler

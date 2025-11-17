@@ -14,7 +14,7 @@ export default function MiCuenta() {
     if (!usuario) {
       navigate("/login");
     }
-  }, [ navigate, usuario ]);
+  }, [navigate, usuario]);
 
   if (!usuario) return null; // evita error antes de redirigir
 

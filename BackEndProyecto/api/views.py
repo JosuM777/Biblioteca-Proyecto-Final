@@ -1,20 +1,27 @@
 from django.shortcuts import render
-from .serializers import UsuarioSerializer,LibroSerializer,AlquilerSerializer
-from .models import Usuario,Libro,Alquiler
-from rest_framework.generics import ListCreateAPIView,RetrieveUpdateDestroyAPIView
+from .serializers import UsuarioSerializer, LibroSerializer, AlquilerSerializer
+from .models import Usuario, Libro, Alquiler
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
-from rest_framework import viewsets
-from django.contrib.auth import get_user_model
-from django.contrib.auth import authenticate
+from rest_framework import status, viewsets
+from django.contrib.auth import get_user_model, authenticate
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 User = get_user_model()
 
+# Crear usuarios
 class UsuarioCreateView(ListCreateAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
-    
+
+# ✅ Nueva vista para actualizar, obtener y eliminar usuarios
+class UsuarioDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = Usuario.objects.all()
+    serializer_class = UsuarioSerializer
+
+# Registro personalizado
 class RegisterView(APIView):
     def post(self, request):
         username = request.data.get("username")
@@ -26,28 +33,14 @@ class RegisterView(APIView):
         direccion = request.data.get("direccion")
 
         if Usuario.objects.filter(username=username).exists():
-            return Response(
-                {"error": "El nombre de usuario ya existe"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"error": "El nombre de usuario ya existe"}, status=status.HTTP_400_BAD_REQUEST)
         if Usuario.objects.filter(email=email).exists():
-            return Response(
-                {"error": "El correo ya existe"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
+            return Response({"error": "El correo ya existe"}, status=status.HTTP_400_BAD_REQUEST)
         if Usuario.objects.filter(num_telefono=num_telefono).exists():
-            return Response(
-                {"error:El número de teléfono ya existe"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
+            return Response({"error": "El número de teléfono ya existe"}, status=status.HTTP_400_BAD_REQUEST)
         if Usuario.objects.filter(direccion=direccion).exists():
-            return Response(
-                {"error:La dirección ya existe"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
+            return Response({"error": "La dirección ya existe"}, status=status.HTTP_400_BAD_REQUEST)
+
         usuario = Usuario.objects.create_user(
             username=username,
             email=email,
@@ -59,13 +52,9 @@ class RegisterView(APIView):
         )
         usuario.save()
 
-        return Response(
-            {"message": "Usuario registrado exitosamente"},
-            status=status.HTTP_201_CREATED
-        )
-    
-            
-    
+        return Response({"message": "Usuario registrado exitosamente"}, status=status.HTTP_201_CREATED)
+
+# Login
 class LoginView(APIView):
     def post(self, request):
         username = request.data.get("username")
@@ -77,20 +66,15 @@ class LoginView(APIView):
             serializer = UsuarioSerializer(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
-            return Response(
-                {"error": "Credenciales Incorrectas"},
-                status=status.HTTP_401_UNAUTHORIZED
-            )
+            return Response({"error": "Credenciales Incorrectas"}, status=status.HTTP_401_UNAUTHORIZED)
 
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter, OrderingFilter
-
+# Libros
 class LibroListCreateView(ListCreateAPIView):
     queryset = Libro.objects.all()
     serializer_class = LibroSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ['estado', 'genero']  # Puedes filtrar por estado o género
-    search_fields = ['titulo', 'autor_o_editorial', 'descripcion']  # Búsqueda general
+    filterset_fields = ['estado', 'genero']
+    search_fields = ['titulo', 'autor_o_editorial', 'descripcion']
     ordering_fields = ['precio', 'titulo']
 
     def get_queryset(self):
@@ -99,47 +83,29 @@ class LibroListCreateView(ListCreateAPIView):
             return Libro.objects.filter(usuario_id=usuario_id)
         return Libro.objects.all()
 
-    # Validaciones personalizadas al crear un libro
     def create(self, request, *args, **kwargs):
         data = request.data
-
         if not data.get('titulo'):
             return Response({'titulo': 'El título es obligatorio.'}, status=status.HTTP_400_BAD_REQUEST)
         if not data.get('autor_o_editorial'):
             return Response({'autor_o_editorial': 'Debe indicar un autor o editorial.'}, status=status.HTTP_400_BAD_REQUEST)
         if not data.get('precio') or float(data['precio']) <= 0:
             return Response({'precio': 'El precio debe ser mayor a 0.'}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Evitar duplicados (por título y autor/editorial)
-        if Libro.objects.filter(
-            titulo=data['titulo'],
-            autor_o_editorial=data['autor_o_editorial']
-        ).exists():
-            return Response(
-                {'error': 'Ya existe un libro con ese título y autor/editorial.'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
+        if Libro.objects.filter(titulo=data['titulo'], autor_o_editorial=data['autor_o_editorial']).exists():
+            return Response({'error': 'Ya existe un libro con ese título y autor/editorial.'}, status=status.HTTP_400_BAD_REQUEST)
         return super().create(request, *args, **kwargs)
-
-
 
 class LibroDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Libro.objects.all()
     serializer_class = LibroSerializer
 
-    # Evita eliminar libros alquilados o vendidos
     def destroy(self, request, *args, **kwargs):
         libro = self.get_object()
         if libro.estado in ['alquilado', 'vendido']:
-            return Response(
-                {"error": "No se puede eliminar un libro alquilado o vendido."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"error": "No se puede eliminar un libro alquilado o vendido."}, status=status.HTTP_400_BAD_REQUEST)
         return super().destroy(request, *args, **kwargs)
-    
 
-
+# Alquileres
 class AlquilerListCreateView(ListCreateAPIView):
     queryset = Alquiler.objects.all()
     serializer_class = AlquilerSerializer
@@ -161,29 +127,26 @@ class AlquilerListCreateView(ListCreateAPIView):
         if libro.estado == 'alquilado':
             return Response({'error': 'El libro ya está alquilado.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Cambiar el estado del libro automáticamente
         libro.estado = 'alquilado'
         libro.save()
 
         return super().create(request, *args, **kwargs)
 
-
 class AlquilerDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Alquiler.objects.all()
     serializer_class = AlquilerSerializer
 
-    # Cuando se elimina un alquiler, el libro vuelve a estar disponible
     def perform_destroy(self, instance):
         libro = instance.libro
         libro.estado = 'disponible'
         libro.save()
         instance.delete()
 
+# ViewSet para libros
 class LibroViewSet(viewsets.ModelViewSet):
     queryset = Libro.objects.all()
     serializer_class = LibroSerializer
 
     def perform_create(self, serializer):
-        """ Guardar el creador automáticamente """
         usuario = self.request.user
         serializer.save(creador=usuario)
