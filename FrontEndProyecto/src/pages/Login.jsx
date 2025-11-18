@@ -20,7 +20,7 @@ export default function Login() {
       // Guarda usuario completo
       localStorage.setItem("usuario", JSON.stringify(res.data));
 
-      alert("Inicio de sesión exitoso 🔥");
+      alert("Inicio de sesión exitoso ");
       navigate("/account");
     } catch (error) {
       alert("Credenciales incorrectas");

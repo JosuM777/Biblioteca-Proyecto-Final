@@ -13,6 +13,10 @@ export default function AppRouter() {
       <Route path="/login" element={<Login />} />
       <Route path="/biblioteca" element={<Biblioteca />} />
       <Route path="/account" element={<MiCuenta />} />
+      <Route path="/admin" element={<AdminPage />} />
+      <Route path="/libro/:id" element={<LibroDetalle />} />
+      <Route path="/crear" element={<CrearLibro />} />
+      <Route path="/editar/:id" element={<EditarLibro />} />
     </Routes>
   );
 }

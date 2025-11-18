@@ -1,0 +1,84 @@
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f4f4;
+}
+
+/* Sidebar */
+.admin-sidebar {
+  width: 260px;
+  background: #1e1e2f;
+  padding: 20px;
+  color: white;
+  position: fixed;
+  height: 100%;
+}
+
+.admin-sidebar h2 {
+  font-size: 22px;
+  margin-bottom: 30px;
+}
+
+.admin-sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.admin-sidebar li {
+  margin-bottom: 20px;
+}
+
+.admin-sidebar a {
+  text-decoration: none;
+  color: #cfcfcf;
+  font-size: 18px;
+  transition: 0.3s;
+}
+
+.admin-sidebar a:hover {
+  color: white;
+  margin-left: 5px;
+}
+
+/* Content area */
+.admin-content {
+  margin-left: 260px;
+  padding: 40px;
+  width: 100%;
+}
+
+/* Tabla general */
+.admin-table {
+  width: 100%;
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.admin-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table th, .admin-table td {
+  padding: 12px 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.admin-table th {
+  background: #ececec;
+  text-align: left;
+}
+
+.btn {
+  padding: 10px 15px;
+  background: #4c6ef5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #2f56e0;
+}
