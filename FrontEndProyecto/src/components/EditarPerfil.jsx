@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function EditarPerfil() {
   const [usuario, setUsuario] = useState(null);
@@ -11,8 +12,10 @@ export default function EditarPerfil() {
     num_telefono: "",
     direccion: ""
   });
+  const [fotoPerfil, setFotoPerfil] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const navigate = useNavigate(); // ✅ Hook para redirección
 
-  // 1️⃣ Cargar usuario desde localStorage
   useEffect(() => {
     const data = localStorage.getItem("usuario");
     if (data) {
@@ -26,6 +29,9 @@ export default function EditarPerfil() {
         num_telefono: user.num_telefono || "",
         direccion: user.direccion || "",
       });
+      if (user.foto_perfil) {
+        setPreview(user.foto_perfil);
+      }
     }
   }, []);
 
@@ -33,7 +39,6 @@ export default function EditarPerfil() {
     return <p>Cargando información...</p>;
   }
 
-  // 2️⃣ Manejar cambios en los inputs
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -41,22 +46,40 @@ export default function EditarPerfil() {
     });
   };
 
-  // 3️⃣ Enviar actualización
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setFotoPerfil(file);
+    setPreview(URL.createObjectURL(file));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const formData = new FormData();
+      Object.entries(form).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+      if (fotoPerfil) {
+        formData.append("foto_perfil", fotoPerfil);
+      }
+
       const res = await axios.put(
         `http://localhost:8000/api/usuarios/${usuario.id}/`,
-        form
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        }
       );
 
-      // Actualizar localStorage
       localStorage.setItem("usuario", JSON.stringify(res.data));
-
       alert("Perfil actualizado exitosamente.");
+      navigate("/account"); // ✅ Redirección después de actualizar
+
     } catch (error) {
-      console.error("Error al actualizar perfil:", error);
-      alert("Error al actualizar perfil.");
+      console.error("Error al actualizar perfil:", error.response?.data || error.message);
+      alert("Error al actualizar perfil: " + JSON.stringify(error.response?.data));
     }
   };
 
@@ -65,6 +88,17 @@ export default function EditarPerfil() {
       <h2>Editar Perfil</h2>
 
       <form onSubmit={handleSubmit} className="form-editar">
+        {preview && (
+          <img
+            src={preview}
+            alt="Foto de perfil"
+            style={{ width: "120px", height: "120px", borderRadius: "50%", objectFit: "cover", marginBottom: "1rem" }}
+          />
+        )}
+
+        <label>Foto de perfil</label>
+        <input type="file" accept="image/*" onChange={handleFileChange} />
+
         <label>Nombre de usuario</label>
         <input name="username" value={form.username} onChange={handleChange} />
 

@@ -6,7 +6,6 @@ export default function MisDatos() {
   const navigate = useNavigate();
   const [usuario, setUsuario] = useState(null);
 
-  // Aquí defines el ID del usuario actual (puede venir de contexto, props, o sesión)
   const idUsuario = 1; // ← Reemplaza esto con la fuente real del ID si lo tienes
 
   useEffect(() => {
@@ -22,6 +21,21 @@ export default function MisDatos() {
   return (
     <div className="misdatos-card">
       <h2>Mis Datos</h2>
+
+      {/* ✅ Foto de perfil */}
+      {usuario.foto_perfil && (
+        <img
+          src={usuario.foto_perfil}
+          alt="Foto de perfil"
+          style={{
+            width: "120px",
+            height: "120px",
+            borderRadius: "50%",
+            objectFit: "cover",
+            marginBottom: "1rem"
+          }}
+        />
+      )}
 
       <div className="misdatos-info">
         <p><strong>Nombre:</strong> {usuario.first_name} {usuario.last_name}</p>

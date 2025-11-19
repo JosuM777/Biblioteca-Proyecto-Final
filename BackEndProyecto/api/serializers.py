@@ -1,14 +1,20 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer  # type: ignore
 from .models import Usuario, Libro, Alquiler
 
 
 class UsuarioSerializer(ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['id', 'username', 'email', 'first_name',
-                  'last_name', 'num_telefono', 'direccion', 'password']
+        fields = [
+            'id', 'username', 'email', 'first_name',
+            'last_name', 'num_telefono', 'direccion',
+            'password', 'foto_perfil'
+        ]
         extra_kwargs = {
-            'password': {'write_only': True}
+            'password': {
+                'write_only': True,
+                'required': False  # ✅ Esto lo hace opcional en actualizaciones
+            }
         }
 
     def create(self, validated_data):

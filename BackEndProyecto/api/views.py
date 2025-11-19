@@ -8,18 +8,27 @@ from rest_framework import status, viewsets
 from django.contrib.auth import get_user_model, authenticate
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.parsers import MultiPartParser, FormParser
+
 
 User = get_user_model()
 
 # Crear usuarios
+
+
 class UsuarioCreateView(ListCreateAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
 
 # ✅ Nueva vista para actualizar, obtener y eliminar usuarios
+
+
 class UsuarioDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
+    # 👈 Esto permite recibir imágenes
+    parser_classes = [MultiPartParser, FormParser]
+
 
 # Registro personalizado
 class RegisterView(APIView):
@@ -55,6 +64,8 @@ class RegisterView(APIView):
         return Response({"message": "Usuario registrado exitosamente"}, status=status.HTTP_201_CREATED)
 
 # Login
+
+
 class LoginView(APIView):
     def post(self, request):
         username = request.data.get("username")
@@ -69,6 +80,8 @@ class LoginView(APIView):
             return Response({"error": "Credenciales Incorrectas"}, status=status.HTTP_401_UNAUTHORIZED)
 
 # Libros
+
+
 class LibroListCreateView(ListCreateAPIView):
     queryset = Libro.objects.all()
     serializer_class = LibroSerializer
@@ -95,6 +108,7 @@ class LibroListCreateView(ListCreateAPIView):
             return Response({'error': 'Ya existe un libro con ese título y autor/editorial.'}, status=status.HTTP_400_BAD_REQUEST)
         return super().create(request, *args, **kwargs)
 
+
 class LibroDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Libro.objects.all()
     serializer_class = LibroSerializer
@@ -106,6 +120,8 @@ class LibroDetailView(RetrieveUpdateDestroyAPIView):
         return super().destroy(request, *args, **kwargs)
 
 # Alquileres
+
+
 class AlquilerListCreateView(ListCreateAPIView):
     queryset = Alquiler.objects.all()
     serializer_class = AlquilerSerializer
@@ -132,6 +148,7 @@ class AlquilerListCreateView(ListCreateAPIView):
 
         return super().create(request, *args, **kwargs)
 
+
 class AlquilerDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Alquiler.objects.all()
     serializer_class = AlquilerSerializer
@@ -143,6 +160,8 @@ class AlquilerDetailView(RetrieveUpdateDestroyAPIView):
         instance.delete()
 
 # ViewSet para libros
+
+
 class LibroViewSet(viewsets.ModelViewSet):
     queryset = Libro.objects.all()
     serializer_class = LibroSerializer
