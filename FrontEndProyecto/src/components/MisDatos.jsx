@@ -6,8 +6,9 @@ export default function MisDatos() {
   const navigate = useNavigate();
   const [usuario, setUsuario] = useState(null);
 
-  // Aquí defines el ID del usuario actual (puede venir de contexto, props, o sesión)
-  const idUsuario = 1; // ← Reemplaza esto con la fuente real del ID si lo tienes
+  const idUsuario = localStorage.getItem("usuario")
+    ? JSON.parse(localStorage.getItem("usuario")).id
+    : null;
 
   useEffect(() => {
     axios.get(`http://localhost:8000/api/usuarios/${idUsuario}/`)

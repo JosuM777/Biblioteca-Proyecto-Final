@@ -12,7 +12,7 @@ export default function EditarPerfil() {
     direccion: ""
   });
 
-  // 1️⃣ Cargar usuario desde localStorage
+  // Cargar usuario desde localStorage
   useEffect(() => {
     const data = localStorage.getItem("usuario");
     if (data) {
@@ -33,7 +33,7 @@ export default function EditarPerfil() {
     return <p>Cargando información...</p>;
   }
 
-  // 2️⃣ Manejar cambios en los inputs
+  // Manejar cambios en los inputs
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -41,7 +41,7 @@ export default function EditarPerfil() {
     });
   };
 
-  // 3️⃣ Enviar actualización
+  // 3️Enviar actualización
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {

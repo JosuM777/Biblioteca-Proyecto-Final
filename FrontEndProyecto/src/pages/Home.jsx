@@ -9,8 +9,8 @@ export default function Home() {
         <div className="hero-content">
           <h1>Bienvenido a <span className="brand">ReBook</span></h1>
           <p>Descubre, comparte y alquila libros con otros lectores.</p>
-          <Link to="/catalog" className="btn-primary">Explorar Libros</Link>
-          <Link to="/EditarUsuario" className="btn-editar">Editar tu Usuario</Link>
+          <Link to="/biblioteca" className="btn-primary">Explorar Libros</Link>
+          <Link to="/editar-perfil" className="btn-editar">Editar tu Usuario</Link>
         </div>
       </section>
 

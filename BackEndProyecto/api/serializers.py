@@ -5,7 +5,7 @@ from .models import Usuario, Libro, Alquiler
 class UsuarioSerializer(ModelSerializer):
     class Meta:
         model = Usuario
-        fields = ['id', 'username', 'email', 'first_name',
+        fields = ['id', 'username', 'email', 'first_name','rol',
                   'last_name', 'num_telefono', 'direccion', 'password']
         extra_kwargs = {
             'password': {'write_only': True}
