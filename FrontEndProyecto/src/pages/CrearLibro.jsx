@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "../styles/CrearLibro.css";
-
+//import "../styles/crearlibro.css";
 
 export default function CrearLibro() {
   const navigate = useNavigate();
 
-  // 1 Verificar usuario logueado
+  // Verificar usuario logueado
   const usuario = JSON.parse(localStorage.getItem("usuario"));
   useEffect(() => {
     if (!usuario) {
-      navigate("/login"); // No logueado  redirigir
+      navigate("/login"); 
     }
   },  [ navigate, usuario ]);
 
@@ -64,8 +63,7 @@ export default function CrearLibro() {
     }
   };
 
-  if (!usuario) return null; // Evita renderizar antes de redirigir
-
+  if (!usuario) return null;
   return (
     <div className="crear-libro-container">
       <h1>Agregar Libro</h1>

@@ -17,7 +17,7 @@ export default function MisLibros({ usuario }) {
       .finally(() => setLoading(false));
   }, [usuario]);
 
-  // 🔹 Eliminar libro
+  // Eliminar libro
   const eliminarLibro = async (id) => {
     if (!window.confirm("¿Seguro que quieres eliminar este libro?")) return;
 
@@ -30,7 +30,7 @@ export default function MisLibros({ usuario }) {
     }
   };
 
-  // 🔹 Cambiar estado del libro
+  // Cambiar estado del libro
   const cambiarEstado = async (id, nuevoEstado) => {
     try {
       await axios.patch(`http://localhost:8000/api/libros/${id}/`, {
@@ -49,7 +49,7 @@ export default function MisLibros({ usuario }) {
   return (
     <div className="mislibros-container">
       <div className="mislibros-header">
-        <h2>📘 Mis Libros</h2>
+        <h2> Mis Libros</h2>
         <a href="/crear-libro" className="btn-crear">+ Crear nuevo libro</a>
       </div>
 
@@ -79,29 +79,24 @@ export default function MisLibros({ usuario }) {
                   {libro.estado}
                 </span>
 
-                {/* BOTONES */}
                 <div className="botones-libro">
                   
-                  {/* Ver detalles */}
                   <a href={`/libro/${libro.id}`} className="btn-detalle">
                     👁 Ver
                   </a>
 
-                  {/* Editar */}
                   <a href={`/editar-libro/${libro.id}`} className="btn-editar">
-                    ✏ Editar
+                     Editar
                   </a>
 
-                  {/* Eliminar */}
                   <button
                     onClick={() => eliminarLibro(libro.id)}
                     className="btn-eliminar"
                   >
-                    🗑 Eliminar
+                     Eliminar
                   </button>
                 </div>
 
-                {/* CAMBIAR ESTADO */}
                 <div className="estado-botones">
                   {libro.estado !== "disponible" && (
                     <button

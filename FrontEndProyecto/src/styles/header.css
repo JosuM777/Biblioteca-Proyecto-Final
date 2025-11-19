@@ -105,11 +105,6 @@
     margin-bottom: 6px;
   }
 
-  .nav-links {
-    flex-direction: column;
-    width: 100%;
-  }
-
   .nav-btn, 
   .btn-primary,
   .btn-logout {

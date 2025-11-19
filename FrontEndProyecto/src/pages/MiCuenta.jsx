@@ -9,18 +9,17 @@ export default function MiCuenta() {
   const navigate = useNavigate();
   const usuario = JSON.parse(localStorage.getItem("usuario"));
 
-  // 🔐 Si NO hay usuario, redirigir al login
+  // Si NO hay usuario, redirigir al login
   useEffect(() => {
     if (!usuario) {
       navigate("/login");
     }
   }, [navigate, usuario]);
 
-  if (!usuario) return null; // evita error antes de redirigir
+  if (!usuario) return null; 
 
   return (
     <div className="cuenta-container">
-      {/* SIDEBAR */}
       <aside className="cuenta-sidebar">
         <h2>Mi Cuenta</h2>
         <ul>
@@ -29,7 +28,6 @@ export default function MiCuenta() {
         </ul>
       </aside>
 
-      {/* CONTENIDO */}
       <main className="cuenta-main">
         <section id="datos">
           <MisDatos />
