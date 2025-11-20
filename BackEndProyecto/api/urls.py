@@ -15,5 +15,5 @@ urlpatterns = [
     path('libros/', LibroListCreateView.as_view(), name='libros'),
     path('usuarios/', UsuarioCreateView.as_view(), name='usuario-list'),
     path('usuarios/<int:pk>/', UsuarioDetailView.as_view(),
-         name='usuario-detail'),  # ✅ Aquí
+         name='usuario-detail'), 
 ]

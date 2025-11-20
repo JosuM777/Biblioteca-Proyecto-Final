@@ -11,6 +11,8 @@ export default function Footer() {
       <a href="/">Inicio</a>
       <a href="/biblioteca">Biblioteca</a>
       <a href="/crear-libro">Crear Libro</a>
+      <a href="/admin">admin</a>    
+      <a href="/mantenimiento"></a>
     </div>
 
     <div className="footer-section">

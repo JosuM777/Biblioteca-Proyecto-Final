@@ -1,38 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import axios from "axios";
-//import "../styles/Mantenimiento.css";
 
 export default function Mantenimiento() {
-  const [libros, setLibros] = useState([]);
 
-  useEffect(() => {
-    axios.get("http://localhost:3001/libros")
-      .then(res => setLibros(res.data));
-  }, []);
+  const limpiarHistorial = () => {
+    axios.delete("http://localhost:8000/historial")
+      .then(() => alert("Historial borrado"));
+  };
 
-  const actualizarEstado = (id, estado) => {
-    axios.put(`http://localhost:3001/libros/${id}`, { estado })
-      .then(() => window.location.reload());
+  const resetLibros = () => {
+    axios.post("http://localhost:8000/reset/libros")
+      .then(() => alert("Libros restaurados"));
+  };
+
+  const resetUsuarios = () => {
+    axios.post("http://localhost:8000/reset/usuarios")
+      .then(() => alert("Usuarios restaurados"));
   };
 
   return (
-    <div className="mantenimiento-container">
-      <h1>Mantenimiento de Libros</h1>
+    <div className="admin-container">
+      <h1>Mantenimiento del Sistema</h1>
 
-      {libros.map(libro => (
-        <div key={libro.id} className="mant-card">
-          <h3>{libro.titulo}</h3>
+      <div className="maint-grid">
 
-          <select
-            value={libro.estado}
-            onChange={(e) => actualizarEstado(libro.id, e.target.value)}
-          >
-            <option value="disponible">Disponible</option>
-            <option value="alquilado">Alquilado</option>
-            <option value="vendido">Vendido</option>
-          </select>
-        </div>
-      ))}
+        <button onClick={limpiarHistorial} className="maint-btn">
+          Borrar historial de alquileres
+        </button>
+
+        <button onClick={resetLibros} className="maint-btn">
+          Restaurar libros a valores iniciales
+        </button>
+
+        <button onClick={resetUsuarios} className="maint-btn">
+          Restaurar usuarios
+        </button>
+
+      </div>
     </div>
   );
 }

@@ -13,7 +13,7 @@ class UsuarioSerializer(ModelSerializer):
         extra_kwargs = {
             'password': {
                 'write_only': True,
-                'required': False  # ✅ Esto lo hace opcional en actualizaciones
+                'required': False  
             }
         }
 

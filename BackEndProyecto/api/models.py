@@ -6,7 +6,14 @@ from django.contrib.auth.models import AbstractUser
 class Usuario(AbstractUser):
     num_telefono = models.CharField(max_length=20)
     direccion = models.CharField(max_length=255)
+    foto_perfil = models.ImageField(upload_to="perfiles/", null=True, blank=True)
 
+    ROLES = [
+        ('admin', 'Administrador'),
+        ('autor', 'Autor'),
+        ('usuario', 'Usuario'),
+    ]
+    rol = models.CharField(max_length=20, choices=ROLES, default='usuario')
 
 
 class Libro(models.Model):
