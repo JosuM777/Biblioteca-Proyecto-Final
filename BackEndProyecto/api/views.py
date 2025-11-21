@@ -82,28 +82,25 @@ class LoginView(APIView):
 class LibroListCreateView(ListCreateAPIView):
     queryset = Libro.objects.all()
     serializer_class = LibroSerializer
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ['estado', 'genero']
-    search_fields = ['titulo', 'autor_o_editorial', 'descripcion']
-    ordering_fields = ['precio', 'titulo']
+    # filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    # filterset_fields = ['estado', 'genero']
+    # ordering_fields = ['precio', 'titulo']
 
-    def get_queryset(self):
-        usuario_id = self.request.query_params.get("usuario")
-        if usuario_id:
-            return Libro.objects.filter(usuario_id=usuario_id)
-        return Libro.objects.all()
+    # def get_queryset(self):
+    #     usuario_id = self.request.query_params.get("usuario")
+    #     if usuario_id:
+    #         return Libro.objects.filter(usuario_id=usuario_id)
+    #     return Libro.objects.all()
 
-    def create(self, request, *args, **kwargs):
-        data = request.data
-        if not data.get('titulo'):
-            return Response({'titulo': 'El título es obligatorio.'}, status=status.HTTP_400_BAD_REQUEST)
-        if not data.get('autor_o_editorial'):
-            return Response({'autor_o_editorial': 'Debe indicar un autor o editorial.'}, status=status.HTTP_400_BAD_REQUEST)
-        if not data.get('precio') or float(data['precio']) <= 0:
-            return Response({'precio': 'El precio debe ser mayor a 0.'}, status=status.HTTP_400_BAD_REQUEST)
-        if Libro.objects.filter(titulo=data['titulo'], autor_o_editorial=data['autor_o_editorial']).exists():
-            return Response({'error': 'Ya existe un libro con ese título y autor/editorial.'}, status=status.HTTP_400_BAD_REQUEST)
-        return super().create(request, *args, **kwargs)
+    # def create(self, request, *args, **kwargs):
+    #     data = request.data
+    #     if not data.get('titulo'):
+    #         return Response({'titulo': 'El título es obligatorio.'}, status=status.HTTP_400_BAD_REQUEST)
+    #     if not data.get('precio') or float(data['precio']) <= 0:
+    #         return Response({'precio': 'El precio debe ser mayor a 0.'}, status=status.HTTP_400_BAD_REQUEST)
+    #     if Libro.objects.filter(titulo=data['titulo'], autor_o_editorial=data['autor_o_editorial']).exists():
+    #         return Response({'error': 'Ya existe un libro con ese título y autor/editorial.'}, status=status.HTTP_400_BAD_REQUEST)
+    #     return super().create(request, *args, **kwargs)
 
 
 class LibroDetailView(RetrieveUpdateDestroyAPIView):
