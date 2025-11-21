@@ -6,14 +6,14 @@ class UsuarioSerializer(ModelSerializer):
     class Meta:
         model = Usuario
         fields = [
-            'id', 'username', 'email', 'first_name',
+            'id', 'username', 'email', 'first_name', 'rol', 
             'last_name', 'num_telefono', 'direccion',
             'password', 'foto_perfil'
         ]
         extra_kwargs = {
             'password': {
                 'write_only': True,
-                'required': False  # ✅ Esto lo hace opcional en actualizaciones
+                'required': False  
             }
         }
 

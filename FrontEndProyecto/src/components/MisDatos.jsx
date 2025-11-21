@@ -6,7 +6,7 @@ export default function MisDatos() {
   const navigate = useNavigate();
   const [usuario, setUsuario] = useState(null);
 
-  const idUsuario = 1; // ← Reemplaza esto con la fuente real del ID si lo tienes
+  const idUsuario = JSON.parse(localStorage.getItem("usuario")).id;
 
   useEffect(() => {
     axios.get(`http://localhost:8000/api/usuarios/${idUsuario}/`)
@@ -22,7 +22,6 @@ export default function MisDatos() {
     <div className="misdatos-card">
       <h2>Mis Datos</h2>
 
-      {/* ✅ Foto de perfil */}
       {usuario.foto_perfil && (
         <img
           src={usuario.foto_perfil}

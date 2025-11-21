@@ -8,7 +8,7 @@ export default function LibroDetalle() {
   const [libro, setLibro] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/libros/${id}`)
+    axios.get(`http://localhost:8000/libros/${id}`)
       .then(res => setLibro(res.data))
       .catch(err => console.log(err));
   }, [id]);

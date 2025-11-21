@@ -20,13 +20,10 @@ class UsuarioCreateView(ListCreateAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
 
-# ✅ Nueva vista para actualizar, obtener y eliminar usuarios
-
 
 class UsuarioDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
-    # 👈 Esto permite recibir imágenes
     parser_classes = [MultiPartParser, FormParser]
 
 
