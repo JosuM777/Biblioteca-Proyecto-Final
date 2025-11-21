@@ -24,8 +24,17 @@ export default function Header() {
 
         <button className="nav-btn" onClick={() => navigate("/biblioteca")}>
           Biblioteca
-        </button>
-
+        </button> 
+        {usuario.rol === "admin" && (
+          <>
+          <button className="nav-btn" onClick={() => navigate("/admin")}>
+            Admin
+          </button>
+          <button className="nav-btn" onClick={() => navigate("/mantenimiento")}>
+            Mantenieminto
+          </button>
+          </>
+        )}
         <button className="nav-btn" onClick={() => navigate("/crear-libro")}>
           Crear Libro
         </button>
