@@ -1,4 +1,4 @@
-/* 🎨 BASE */
+/* BASE */
 .home {
   background-color: #f9fafb;
   color: #1e293b;
@@ -6,7 +6,7 @@
   line-height: 1.6;
 }
 
-/* 🦸 HERO SECTION */
+/* HERO SECTION */
 .hero {
   background: linear-gradient(135deg, #0f172a, #1e3a8a);
   color: #fff;
@@ -65,7 +65,7 @@
   box-shadow: 0 6px 16px rgba(37, 99, 235, 0.5);
 }
 
-/* 📚 SECTIONS */
+/* SECTIONS */
 .section {
   padding: 70px 8%;
 }
@@ -88,7 +88,7 @@
   border-radius: 10px;
 }
 
-/* 🧱 BOOK GRID */
+/* BOOK GRID */
 .book-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
@@ -142,7 +142,7 @@
   font-size: 1rem;
 }
 
-/* 🎭 BOOK STATUS */
+/*  BOOK STATUS */
 .status {
   display: inline-block;
   padding: 6px 12px;
@@ -167,7 +167,7 @@
   color: #991b1b;
 }
 
-/* 🎨 GENRES */
+/*  GENRES */
 .genre-grid {
   display: flex;
   flex-wrap: wrap;

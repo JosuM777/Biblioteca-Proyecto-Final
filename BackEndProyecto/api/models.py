@@ -33,11 +33,12 @@ class Libro(models.Model):
     )
     imagen = models.ImageField(upload_to='libros/', blank=True, null=True)
 
-    # usuario que creó el libro
     creador = models.ForeignKey(
-        "Usuario",
+        Usuario,
         on_delete=models.CASCADE,
-        related_name="libros_creados"
+        related_name="libros_creados",
+        null=True,  
+        blank=True  
     )
 
     def __str__(self):
@@ -48,3 +49,29 @@ class Alquiler(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     libro = models.ForeignKey(Libro, on_delete=models.CASCADE)
     fecha_alquiler = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.usuario.username} - {self.libro.titulo}"
+    
+
+class Intercambio(models.Model):
+    libro = models.ForeignKey(Libro, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    fecha = models.DateField(auto_now_add=True)
+    def __str__(self):
+        return f"Intercambio de {self.libro_ofrecido} por {self.libro_recibido}"
+
+class Vendido(models.Model):
+    libro = models.ForeignKey(Libro, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+    fecha = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.libro.titulo} vendido a {self.usuario.correo}"
+
+creador = models.ForeignKey(
+    Usuario,
+    on_delete=models.CASCADE,
+    null=True,
+    blank=True
+)

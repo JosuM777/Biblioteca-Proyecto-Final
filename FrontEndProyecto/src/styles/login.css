@@ -1,4 +1,4 @@
-/* ======== CONTENEDOR GENERAL ======== */
+/* CONTENEDOR GENERAL */
 .login-page {
   display: flex;
   justify-content: center;
@@ -8,7 +8,7 @@
   padding: 20px;
 }
 
-/* ======== CARD DEL LOGIN ======== */
+/* CARD DEL LOGIN */
 .login-box {
   background: #ffffff;
   width: 100%;
@@ -26,7 +26,7 @@
   to { opacity: 1; transform: scale(1) }
 }
 
-/* ======== TÍTULO ======== */
+/* TÍTULO */
 .login-box h1 {
   font-size: 1.9rem;
   margin-bottom: 25px;
@@ -34,7 +34,7 @@
   font-weight: 700;
 }
 
-/* ======== INPUTS ======== */
+/* INPUTS */
 .login-box input {
   width: 100%;
   padding: 12px 14px;
@@ -53,7 +53,7 @@
   outline: none;
 }
 
-/* ======== BOTÓN ======== */
+/* BOTÓN */
 .login-box button {
   width: 100%;
   background-color: #60a5fa;
@@ -77,7 +77,7 @@ body{
   transform: translateY(-2px);
 }
 
-/* ======== MODO RESPONSIVE ======== */
+/*  MODO RESPONSIVE */
 @media (max-width: 480px) {
   .login-box {
     padding: 30px 25px;

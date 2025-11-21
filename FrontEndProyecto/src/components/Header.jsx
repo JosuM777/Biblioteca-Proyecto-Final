@@ -4,7 +4,12 @@ import "../styles/header.css";
 
 export default function Header() {
   const navigate = useNavigate();
+
+  // Si no hay usuario, usuario será null sin causar error
   const usuario = JSON.parse(localStorage.getItem("usuario"));
+
+  // Leer el rol solo si existe usuario
+  const rol = usuario?.rol || null;
 
   const cerrarSesion = () => {
     localStorage.removeItem("usuario");
@@ -24,20 +29,32 @@ export default function Header() {
 
         <button className="nav-btn" onClick={() => navigate("/biblioteca")}>
           Biblioteca
-        </button> 
-        {usuario.rol === "admin" && (
+        </button>
+
+        {rol === "admin" && (
           <>
-          <button className="nav-btn" onClick={() => navigate("/admin")}>
-            Admin
-          </button>
-          <button className="nav-btn" onClick={() => navigate("/mantenimiento")}>
-            Mantenieminto
-          </button>
+            <button className="nav-btn" onClick={() => navigate("/admin")}>
+              Admin
+            </button>
+            <button className="nav-btn" onClick={() => navigate("/mantenimiento")}>
+              Mantenimiento
+            </button>
+            <button className="nav-btn" onClick={() => navigate("/crear-libro")}>
+              Crear Libro
+            </button>
           </>
         )}
-        <button className="nav-btn" onClick={() => navigate("/crear-libro")}>
-          Crear Libro
-        </button>
+
+        {rol === "autor" && (
+          <>
+
+            <button className="nav-btn" onClick={() => navigate("/crear-libro")}>
+              Crear Libro
+            </button>
+
+          </>
+        )}
+
 
         {usuario ? (
           <>

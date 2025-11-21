@@ -1,4 +1,4 @@
-/* ======== CONTENEDOR GENERAL ======== */
+/* CONTENEDOR GENERAL */
 .register-page {
   display: flex;
   justify-content: center;
@@ -9,7 +9,7 @@
   flex-direction: column;
 }
 
-/* ======== TÍTULO ======== */
+/* TÍTULO */
 .register-page h1 {
   color: #f8fafc;
   font-size: 2rem;
@@ -19,7 +19,7 @@
   letter-spacing: 1px;
 }
 
-/* ======== FORMULARIO ======== */
+/* FORMULARIO */
 .register-form {
   background: #ffffff;
   width: 100%;
@@ -39,7 +39,7 @@
   to { opacity: 1; transform: scale(1) }
 }
 
-/* ======== INPUTS ======== */
+/* INPUTS */
 .form-field input {
   width: 100%;
   padding: 12px 14px;
@@ -57,7 +57,7 @@
   outline: none;
 }
 
-/* ======== BOTÓN ======== */
+/* BOTÓN */
 .btn {
   background-color: #60a5fa;
   color: #0f172a;
@@ -77,7 +77,7 @@
   transform: translateY(-2px);
 }
 
-/* ======== RESPONSIVE ======== */
+/* RESPONSIVE */
 @media (max-width: 460px) {
   .register-form {
     padding: 25px 20px;

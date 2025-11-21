@@ -1,4 +1,4 @@
-/* ===== CONTENEDOR PRINCIPAL ===== */
+/* CONTENEDOR PRINCIPAL */
 
 .mislibros-container {
   margin-top: 30px;
@@ -8,7 +8,7 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-/* ===== HEADER ===== */
+/* HEADER */
 
 .mislibros-header {
   display: flex;
@@ -37,7 +37,7 @@
   background: #0062cc;
 }
 
-/* ===== GRID ===== */
+/* GRID */
 
 .mislibros-grid {
   display: grid;
@@ -45,7 +45,7 @@
   gap: 22px;
 }
 
-/* ===== CARD ===== */
+/* CARD */
 
 .mislibros-card {
   background: #fdfdfd;
@@ -60,7 +60,7 @@
   box-shadow: 0 6px 18px rgba(0,0,0,0.15);
 }
 
-/* ===== IMAGEN ===== */
+/* IMAGEN */
 
 .mislibros-img {
   width: 100%;
@@ -69,7 +69,7 @@
   border-radius: 8px;
 }
 
-/* ===== INFORMACIÓN ===== */
+/* INFORMACIÓN */
 
 .mislibros-info {
   margin-top: 10px;
@@ -97,7 +97,7 @@
   margin-top: 8px;
 }
 
-/* ===== ESTADO ===== */
+/* ESTADO */
 
 .estado {
   display: inline-block;
@@ -113,7 +113,7 @@
 .estado.alquilado  { background: #f1c40f; color: #333; }
 .estado.vendido    { background: #e74c3c; }
 
-/* ===== BOTONES DENTRO DE LA TARJETA ===== */
+/* BOTONES DENTRO DE LA TARJETA */
 
 .botones-libro {
   display: flex;
@@ -152,7 +152,7 @@
   background: #c0392b;
 }
 
-/* ===== BOTONES DE ESTADO ===== */
+/* BOTONES DE ESTADO */
 
 .estado-botones {
   display: flex;
@@ -180,7 +180,7 @@
 }
 
 
-/* ===== RESPONSIVE ===== */
+/* RESPONSIVE */
 
 @media (max-width: 900px) {
   .mislibros-grid {

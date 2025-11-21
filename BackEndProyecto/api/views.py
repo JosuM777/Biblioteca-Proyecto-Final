@@ -9,13 +9,13 @@ from django.contrib.auth import get_user_model, authenticate
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.parsers import MultiPartParser, FormParser
+from .serializers import VendidoSerializer, IntercambioSerializer
+from .models import Vendido , Intercambio
 
 
 User = get_user_model()
 
 # Crear usuarios
-
-
 class UsuarioCreateView(ListCreateAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
@@ -61,8 +61,6 @@ class RegisterView(APIView):
         return Response({"message": "Usuario registrado exitosamente"}, status=status.HTTP_201_CREATED)
 
 # Login
-
-
 class LoginView(APIView):
     def post(self, request):
         username = request.data.get("username")
@@ -77,8 +75,6 @@ class LoginView(APIView):
             return Response({"error": "Credenciales Incorrectas"}, status=status.HTTP_401_UNAUTHORIZED)
 
 # Libros
-
-
 class LibroListCreateView(ListCreateAPIView):
     queryset = Libro.objects.all()
     serializer_class = LibroSerializer
@@ -117,8 +113,6 @@ class LibroDetailView(RetrieveUpdateDestroyAPIView):
         return super().destroy(request, *args, **kwargs)
 
 # Alquileres
-
-
 class AlquilerListCreateView(ListCreateAPIView):
     queryset = Alquiler.objects.all()
     serializer_class = AlquilerSerializer
@@ -157,8 +151,6 @@ class AlquilerDetailView(RetrieveUpdateDestroyAPIView):
         instance.delete()
 
 # ViewSet para libros
-
-
 class LibroViewSet(viewsets.ModelViewSet):
     queryset = Libro.objects.all()
     serializer_class = LibroSerializer
@@ -166,3 +158,29 @@ class LibroViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         usuario = self.request.user
         serializer.save(creador=usuario)
+
+class VendidoListCreateView(ListCreateAPIView):
+    queryset = Vendido.objects.all()
+    serializer_class = VendidoSerializer
+
+class IntercambioListCreateView(ListCreateAPIView):
+    queryset = Intercambio.objects.all()
+    serializer_class = IntercambioSerializer
+
+
+class LibrosVendidosView(APIView):
+    def get(self, request):
+        cantidad = Vendido.objects.count()
+        return Response({"vendidos": cantidad})
+
+
+class LibrosAlquiladosView(APIView):
+    def get(self, request):
+        cantidad = Alquiler.objects.count()
+        return Response({"alquilados": cantidad})
+
+
+class LibrosIntercambiadosView(APIView):
+    def get(self, request):
+        cantidad = Intercambio.objects.count()
+        return Response({"intercambiados": cantidad})

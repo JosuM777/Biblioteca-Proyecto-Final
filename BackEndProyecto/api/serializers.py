@@ -1,19 +1,18 @@
-from rest_framework.serializers import ModelSerializer  # type: ignore
-from .models import Usuario, Libro, Alquiler
+from rest_framework.serializers import ModelSerializer
+from .models import Usuario, Libro, Alquiler, Intercambio, Vendido
 
 
 class UsuarioSerializer(ModelSerializer):
     class Meta:
         model = Usuario
         fields = [
-            'id', 'username', 'email', 'first_name', 'rol', 
-            'last_name', 'num_telefono', 'direccion',
-            'password', 'foto_perfil'
+            'id', 'username', 'email', 'first_name', 'last_name',
+            'rol', 'num_telefono', 'direccion', 'password', 'foto_perfil'
         ]
         extra_kwargs = {
             'password': {
                 'write_only': True,
-                'required': False  
+                'required': False
             }
         }
 
@@ -44,4 +43,17 @@ class LibroSerializer(ModelSerializer):
 class AlquilerSerializer(ModelSerializer):
     class Meta:
         model = Alquiler
-        fields = '__all__'
+        fields = "__all__"
+
+
+class VendidoSerializer(ModelSerializer):
+    class Meta:
+        model = Vendido
+        fields = "__all__"
+
+
+class IntercambioSerializer(ModelSerializer):
+    class Meta:
+        model = Intercambio
+        fields = "__all__"
+        read_only_fields = ["usuario_intercambia"]
