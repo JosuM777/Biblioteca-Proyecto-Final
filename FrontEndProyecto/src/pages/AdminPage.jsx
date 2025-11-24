@@ -50,7 +50,7 @@ export default function AdminPage() {
 
     } catch (err) {
       console.error(err);
-      setError("No se pudieron cargar los datos del servidor.");
+      setError("No se pudieron cargar los datos del servidor");
     } finally {
       setLoading(false);
     }
@@ -119,7 +119,7 @@ export default function AdminPage() {
 // LIBROS
       {tab === "libros" && (
         <div>
-          <button className="adminp-btn-crear" onClick={() => navigate("/crear")}>
+          <button className="adminp-btn-crear" onClick={() => navigate("/crear-libro")}>
             Crear Libro
           </button>
 

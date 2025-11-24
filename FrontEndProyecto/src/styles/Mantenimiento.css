@@ -1,0 +1,156 @@
+/* CONTENEDOR PRINCIPAL */
+.admin-container,
+.mantenimiento-container {
+  padding: 30px;
+  max-width: 900px;
+  margin: auto;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* TITULOS */
+.admin-container h1,
+.mantenimiento-title {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 32px;
+  font-weight: 700;
+  color: #222;
+}
+
+.mantenimiento-subtitle {
+  text-align: center;
+  color: #555;
+  margin-top: -10px;
+  margin-bottom: 25px;
+  font-size: 18px;
+}
+
+/* GRID DEL PANEL */
+.maint-grid,
+.mantenimiento-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 15px;
+}
+
+/* SUBTÍTULOS */
+.maint-grid h2 {
+  margin-top: 25px;
+  margin-bottom: 10px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
+  border-left: 5px solid #3f51b5;
+  padding-left: 10px;
+}
+
+/* BOTONES DEL PANEL */
+.maint-btn {
+  padding: 14px;
+  background: #3f51b5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: 0.25s ease;
+  width: 100%;
+  display: flex;          /* ⬅ para icono + texto */
+  align-items: center;
+  gap: 10px;              /* separación entre icono y texto */
+  justify-content: center;
+  box-shadow: 0px 3px 10px rgba(0,0,0,0.1);
+}
+
+/* ICONOS */
+.maint-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  filter: invert(1);   /* si tus iconos son negros  esto los vuelve blancos */
+  opacity: 0.9;
+  transition: 0.2s;
+}
+
+.maint-btn:hover .maint-icon {
+  transform: scale(1.08);
+  opacity: 1;
+}
+
+/* BOTÓN PELIGROSO */
+.maint-btn.danger {
+  background: #d9534f;
+}
+
+.maint-btn.danger:hover {
+  background: #b52b27;
+}
+
+/* HOVER SUAVE */
+.maint-btn:hover {
+  background: #303f9f;
+  transform: translateY(-3px);
+  box-shadow: 0px 5px 15px rgba(0,0,0,0.15);
+}
+
+/* ANIMACIÓN AL CLICK */
+.maint-btn:active {
+  transform: scale(0.97);
+}
+
+/* LOADING */
+.loading-text {
+  text-align: center;
+  color: #0077ff;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+/* ----- ESTILO AGREGADO PARA IMÁGENES EN H2 ----- */
+
+.maint-grid h2 {
+  margin-top: 25px;
+  margin-bottom: 10px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
+  border-left: 5px solid #3f51b5;
+  padding-left: 10px;
+
+  display: flex;              /* ← Para colocar imagen + texto alineados */
+  align-items: center;
+  gap: 10px;
+}
+
+.maint-grid h2 img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  user-select: none;
+}
+
+
+/* RESPONSIVE */
+@media (min-width: 600px) {
+  .maint-grid,
+  .mantenimiento-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 900px) {
+  .maint-grid,
+  .mantenimiento-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ANIMACIÓN DE APARICIÓN */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -13,6 +13,7 @@ import AdminPage from "./pages/AdminPage";
 import LibroDetalle from "./pages/LibroDetalle";
 import EditarLibro from "./components/EditarLibro";
 import Mantenimiento from "./pages/Mantenimiento";
+import CrearUsuario from "./components/CrearUsuario";
 
 
 export default function App() {
@@ -31,10 +32,11 @@ export default function App() {
             <Route path="/editar-perfil" element={<EditarPerfil />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/libro/:id" element={<LibroDetalle />} />
-            <Route path="/crear" element={<CrearLibro />} />
             <Route path="/editar/:id" element={<EditarLibro />} />
             <Route path="/admin/editar/:id" element={<EditarLibro />} />
             <Route path="/mantenimiento" element={<Mantenimiento />} />
+            <Route path="/crear-usuario" element={<CrearUsuario />} />
+
 
           </Routes>
         </main>
