@@ -37,7 +37,6 @@ class LibroSerializer(ModelSerializer):
     class Meta:
         model = Libro
         fields = "__all__"
-        read_only_fields = ["creador"]
 
 
 class AlquilerSerializer(ModelSerializer):
