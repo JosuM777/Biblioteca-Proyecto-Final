@@ -10,12 +10,14 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.parsers import MultiPartParser, FormParser
 from .serializers import VendidoSerializer, IntercambioSerializer
-from .models import Vendido , Intercambio
+from .models import Vendido, Intercambio
 
 
 User = get_user_model()
 
 # Crear usuarios
+
+
 class UsuarioCreateView(ListCreateAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
@@ -61,6 +63,8 @@ class RegisterView(APIView):
         return Response({"message": "Usuario registrado exitosamente"}, status=status.HTTP_201_CREATED)
 
 # Login
+
+
 class LoginView(APIView):
     def post(self, request):
         username = request.data.get("username")
@@ -75,28 +79,45 @@ class LoginView(APIView):
             return Response({"error": "Credenciales Incorrectas"}, status=status.HTTP_401_UNAUTHORIZED)
 
 # Libros
+
+
 class LibroListCreateView(ListCreateAPIView):
     queryset = Libro.objects.all()
     serializer_class = LibroSerializer
-    # filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    # filterset_fields = ['estado', 'genero']
-    # ordering_fields = ['precio', 'titulo']
+    
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['estado', 'genero']
+    ordering_fields = ['precio', 'titulo']
 
-    # def get_queryset(self):
-    #     usuario_id = self.request.query_params.get("usuario")
-    #     if usuario_id:
-    #         return Libro.objects.filter(usuario_id=usuario_id)
-    #     return Libro.objects.all()
+    def get_queryset(self):
+        usuario_id = self.request.query_params.get("usuario")
+        if usuario_id:
+            return Libro.objects.filter(usuario_id=usuario_id)
+        return Libro.objects.all()
 
-    # def create(self, request, *args, **kwargs):
-    #     data = request.data
-    #     if not data.get('titulo'):
-    #         return Response({'titulo': 'El título es obligatorio.'}, status=status.HTTP_400_BAD_REQUEST)
-    #     if not data.get('precio') or float(data['precio']) <= 0:
-    #         return Response({'precio': 'El precio debe ser mayor a 0.'}, status=status.HTTP_400_BAD_REQUEST)
-    #     if Libro.objects.filter(titulo=data['titulo'], autor_o_editorial=data['autor_o_editorial']).exists():
-    #         return Response({'error': 'Ya existe un libro con ese título y autor/editorial.'}, status=status.HTTP_400_BAD_REQUEST)
-    #     return super().create(request, *args, **kwargs)
+    def create(self, request, *args, **kwargs):
+        data = request.data
+
+        # Validar título
+        if not data.get('titulo'):
+            return Response({'titulo': 'El título es obligatorio.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Validar precio
+        try:
+            precio = float(data.get('precio', 0))
+            if precio <= 0:
+                return Response({'precio': 'El precio debe ser mayor a 0.'}, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response({'precio': 'El precio debe ser un número válido.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Validar duplicados
+        if Libro.objects.filter(
+            titulo=data['titulo'],
+            autor_o_editorial=data.get('autor_o_editorial')
+        ).exists():
+            return Response({'error': 'Ya existe un libro con ese título y autor/editorial.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        return super().create(request, *args, **kwargs)
 
 
 class LibroDetailView(RetrieveUpdateDestroyAPIView):
