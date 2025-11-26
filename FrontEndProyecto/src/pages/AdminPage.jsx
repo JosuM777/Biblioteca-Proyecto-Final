@@ -58,9 +58,14 @@ export default function AdminPage() {
 
   const eliminarConConfirmacion = (id, tipo) => {
     if (!window.confirm(`¿Seguro que deseas eliminar este ${tipo}?`)) return;
-    let url = `http://localhost:8000/${tipo}/${id}/`;
-    axios.delete(url).then(cargarDatos);
+
+    let url = `http://localhost:8000/api/${tipo}/${id}/`;
+
+    axios.delete(url)
+      .then(cargarDatos)
+      .catch(err => console.error(err));
   };
+
 
   // FILTROS
   const filtrarLibros = libros.filter(l =>

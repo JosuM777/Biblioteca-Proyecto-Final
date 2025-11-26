@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "../styles/EditarLibro.css";
 
 export default function EditarLibro() {
   const { id } = useParams();
@@ -12,48 +13,75 @@ export default function EditarLibro() {
     precio: "",
     descripcion: "",
     genero: "",
-    imagen: "",
     estado: "disponible",
   });
 
+  const [imagenFile, setImagenFile] = useState(null);
+  const [imagenPreview, setImagenPreview] = useState(null);
+
   useEffect(() => {
-    axios.get(`http://localhost:3001/libros/${id}`)
+    axios.get(`http://localhost:3001/api/libros/${id}`)
       .then(res => setLibro(res.data))
-      .catch(err => console.log(err));
+      .catch(err => console.error("Error al cargar el libro:", err));
   }, [id]);
 
   function handleChange(e) {
     setLibro({ ...libro, [e.target.name]: e.target.value });
   }
 
+  function handleFileChange(e) {
+    const file = e.target.files[0];
+    setImagenFile(file);
+    if (file) {
+      setImagenPreview(URL.createObjectURL(file));
+    }
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
 
-    axios.put(`http://localhost:3001/libros/${id}`, libro)
+    const formData = new FormData();
+    formData.append("titulo", libro.titulo);
+    formData.append("autor", libro.autor);
+    formData.append("precio", libro.precio);
+    formData.append("descripcion", libro.descripcion);
+    formData.append("genero", libro.genero);
+    formData.append("estado", libro.estado);
+    if (imagenFile) {
+      formData.append("imagen", imagenFile);
+    }
+
+    axios.put(`http://localhost:3001/api/libros/${id}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
       .then(() => {
         alert("Libro actualizado correctamente");
         navigate("/admin");
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.error("Error al actualizar el libro:", err);
+        alert("Hubo un problema al guardar los cambios.");
+      });
   }
 
   return (
     <div className="editar-libro-container">
       <h1>Editar Libro</h1>
 
-      <form className="form-editar" onSubmit={handleSubmit}>
-        
+      <form className="form-editar" onSubmit={handleSubmit} encType="multipart/form-data">
         <label>Título</label>
-        <input name="titulo" value={libro.titulo} onChange={handleChange} />
+        <input name="titulo" value={libro.titulo} onChange={handleChange} required />
 
         <label>Autor</label>
-        <input name="autor" value={libro.autor} onChange={handleChange} />
+        <input name="autor" value={libro.autor} onChange={handleChange} required />
 
         <label>Precio</label>
-        <input name="precio" value={libro.precio} onChange={handleChange} />
+        <input name="precio" value={libro.precio} onChange={handleChange} required />
 
         <label>Género</label>
-        <input name="genero" value={libro.genero} onChange={handleChange} />
+        <input name="genero" value={libro.genero} onChange={handleChange} required />
 
         <label>Estado</label>
         <select name="estado" value={libro.estado} onChange={handleChange}>
@@ -63,10 +91,16 @@ export default function EditarLibro() {
         </select>
 
         <label>Descripción</label>
-        <textarea name="descripcion" value={libro.descripcion} onChange={handleChange} />
+        <textarea name="descripcion" value={libro.descripcion} onChange={handleChange} required />
 
-        <label>Imagen (URL)</label>
-        <input name="imagen" value={libro.imagen} onChange={handleChange} />
+        <label>Agregar imágenes</label>
+        <input type="file" name="imagen" onChange={handleFileChange} accept="image/*" />
+        {imagenPreview && (
+          <div className="imagen-preview">
+            <p>Vista previa:</p>
+            <img src={imagenPreview} alt="Vista previa" style={{ maxWidth: "100%", marginTop: "10px" }} />
+          </div>
+        )}
 
         <button className="btn-guardar" type="submit">Guardar Cambios</button>
       </form>

@@ -1,6 +1,9 @@
 from django.shortcuts import render
-from .serializers import UsuarioSerializer, LibroSerializer, AlquilerSerializer
-from .models import Usuario, Libro, Alquiler
+from .serializers import (
+    UsuarioSerializer, LibroSerializer, AlquilerSerializer,
+    VendidoSerializer, IntercambioSerializer
+)
+from .models import Usuario, Libro, Alquiler, Vendido, Intercambio
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -9,13 +12,14 @@ from django.contrib.auth import get_user_model, authenticate
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.parsers import MultiPartParser, FormParser
-from .serializers import VendidoSerializer, IntercambioSerializer
-from .models import Vendido , Intercambio
-
 
 User = get_user_model()
 
-# Crear usuarios
+# ===========================
+# Usuarios
+# ===========================
+
+
 class UsuarioCreateView(ListCreateAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
@@ -27,7 +31,6 @@ class UsuarioDetailView(RetrieveUpdateDestroyAPIView):
     parser_classes = [MultiPartParser, FormParser]
 
 
-# Registro personalizado
 class RegisterView(APIView):
     def post(self, request):
         username = request.data.get("username")
@@ -60,7 +63,7 @@ class RegisterView(APIView):
 
         return Response({"message": "Usuario registrado exitosamente"}, status=status.HTTP_201_CREATED)
 
-# Login
+
 class LoginView(APIView):
     def post(self, request):
         username = request.data.get("username")
@@ -74,42 +77,65 @@ class LoginView(APIView):
         else:
             return Response({"error": "Credenciales Incorrectas"}, status=status.HTTP_401_UNAUTHORIZED)
 
+
+# ===========================
 # Libros
+# ===========================
+
 class LibroListCreateView(ListCreateAPIView):
     queryset = Libro.objects.all()
     serializer_class = LibroSerializer
-    # filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    # filterset_fields = ['estado', 'genero']
-    # ordering_fields = ['precio', 'titulo']
 
-    # def get_queryset(self):
-    #     usuario_id = self.request.query_params.get("usuario")
-    #     if usuario_id:
-    #         return Libro.objects.filter(usuario_id=usuario_id)
-    #     return Libro.objects.all()
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['estado', 'genero']
+    ordering_fields = ['precio', 'titulo']
 
-    # def create(self, request, *args, **kwargs):
-    #     data = request.data
-    #     if not data.get('titulo'):
-    #         return Response({'titulo': 'El título es obligatorio.'}, status=status.HTTP_400_BAD_REQUEST)
-    #     if not data.get('precio') or float(data['precio']) <= 0:
-    #         return Response({'precio': 'El precio debe ser mayor a 0.'}, status=status.HTTP_400_BAD_REQUEST)
-    #     if Libro.objects.filter(titulo=data['titulo'], autor_o_editorial=data['autor_o_editorial']).exists():
-    #         return Response({'error': 'Ya existe un libro con ese título y autor/editorial.'}, status=status.HTTP_400_BAD_REQUEST)
-    #     return super().create(request, *args, **kwargs)
+    def get_queryset(self):
+        usuario_id = self.request.query_params.get("usuario")
+        if usuario_id:
+            return Libro.objects.filter(usuario_id=usuario_id)
+        return Libro.objects.all()
+
+    def create(self, request, *args, **kwargs):
+        data = request.data
+
+        if not data.get('titulo'):
+            return Response({'titulo': 'El título es obligatorio.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            precio = float(data.get('precio', 0))
+            if precio <= 0:
+                return Response({'precio': 'El precio debe ser mayor a 0.'}, status=status.HTTP_400_BAD_REQUEST)
+        except:
+            return Response({'precio': 'El precio debe ser un número válido.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if Libro.objects.filter(
+            titulo=data['titulo'],
+            autor_o_editorial=data.get('autor_o_editorial')
+        ).exists():
+            return Response({'error': 'Ya existe un libro con ese título y autor/editorial.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        return super().create(request, *args, **kwargs)
 
 
 class LibroDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Libro.objects.all()
     serializer_class = LibroSerializer
+    # ← añadido para soportar imágenes
+    parser_classes = [MultiPartParser, FormParser]
 
     def destroy(self, request, *args, **kwargs):
         libro = self.get_object()
         if libro.estado in ['alquilado', 'vendido']:
-            return Response({"error": "No se puede eliminar un libro alquilado o vendido."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "No se puede eliminar un libro alquilado o vendido."},
+                            status=status.HTTP_400_BAD_REQUEST)
         return super().destroy(request, *args, **kwargs)
 
+
+# ===========================
 # Alquileres
+# ===========================
+
 class AlquilerListCreateView(ListCreateAPIView):
     queryset = Alquiler.objects.all()
     serializer_class = AlquilerSerializer
@@ -126,10 +152,8 @@ class AlquilerListCreateView(ListCreateAPIView):
         except Libro.DoesNotExist:
             return Response({'error': 'El libro no existe.'}, status=status.HTTP_404_NOT_FOUND)
 
-        if libro.estado == 'vendido':
-            return Response({'error': 'El libro ya fue vendido.'}, status=status.HTTP_400_BAD_REQUEST)
-        if libro.estado == 'alquilado':
-            return Response({'error': 'El libro ya está alquilado.'}, status=status.HTTP_400_BAD_REQUEST)
+        if libro.estado in ['vendido', 'alquilado']:
+            return Response({'error': f'El libro ya está {libro.estado}.'}, status=status.HTTP_400_BAD_REQUEST)
 
         libro.estado = 'alquilado'
         libro.save()
@@ -147,7 +171,11 @@ class AlquilerDetailView(RetrieveUpdateDestroyAPIView):
         libro.save()
         instance.delete()
 
-# ViewSet para libros
+
+# ===========================
+# Extra
+# ===========================
+
 class LibroViewSet(viewsets.ModelViewSet):
     queryset = Libro.objects.all()
     serializer_class = LibroSerializer
@@ -156,9 +184,11 @@ class LibroViewSet(viewsets.ModelViewSet):
         usuario = self.request.user
         serializer.save(creador=usuario)
 
+
 class VendidoListCreateView(ListCreateAPIView):
     queryset = Vendido.objects.all()
     serializer_class = VendidoSerializer
+
 
 class IntercambioListCreateView(ListCreateAPIView):
     queryset = Intercambio.objects.all()
@@ -167,17 +197,14 @@ class IntercambioListCreateView(ListCreateAPIView):
 
 class LibrosVendidosView(APIView):
     def get(self, request):
-        cantidad = Vendido.objects.count()
-        return Response({"vendidos": cantidad})
+        return Response({"vendidos": Vendido.objects.count()})
 
 
 class LibrosAlquiladosView(APIView):
     def get(self, request):
-        cantidad = Alquiler.objects.count()
-        return Response({"alquilados": cantidad})
+        return Response({"alquilados": Alquiler.objects.count()})
 
 
 class LibrosIntercambiadosView(APIView):
     def get(self, request):
-        cantidad = Intercambio.objects.count()
-        return Response({"intercambiados": cantidad})
+        return Response({"intercambiados": Intercambio.objects.count()})
