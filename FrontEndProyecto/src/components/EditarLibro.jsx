@@ -9,20 +9,32 @@ export default function EditarLibro() {
 
   const [libro, setLibro] = useState({
     titulo: "",
-    autor: "",
-    precio: "",
     descripcion: "",
+    precio: "",
+    estado: "",
     genero: "",
-    estado: "disponible",
+    autor_o_editorial: "",
+    imagen: null,
   });
 
   const [imagenFile, setImagenFile] = useState(null);
   const [imagenPreview, setImagenPreview] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:3001/api/libros/${id}`)
-      .then(res => setLibro(res.data))
-      .catch(err => console.error("Error al cargar el libro:", err));
+    axios
+      .get(`http://localhost:8000/api/libros/${id}/`)
+      .then((res) => {
+        setLibro({
+          titulo: res.data.titulo ?? "",
+          descripcion: res.data.descripcion ?? "",
+          precio: res.data.precio ?? "",
+          estado: res.data.estado ?? "",
+          genero: res.data.genero ?? "",
+          autor_o_editorial: res.data.autor_o_editorial ?? "",
+          imagen: res.data.imagen ?? null,
+        });
+      })
+      .catch((err) => console.error("Error al cargar el libro:", err));
   }, [id]);
 
   function handleChange(e) {
@@ -42,25 +54,27 @@ export default function EditarLibro() {
 
     const formData = new FormData();
     formData.append("titulo", libro.titulo);
-    formData.append("autor", libro.autor);
+    formData.append("autor_o_editorial", libro.autor_o_editorial);
     formData.append("precio", libro.precio);
     formData.append("descripcion", libro.descripcion);
     formData.append("genero", libro.genero);
     formData.append("estado", libro.estado);
+
     if (imagenFile) {
       formData.append("imagen", imagenFile);
     }
 
-    axios.put(`http://localhost:3001/api/libros/${id}`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
+    axios
+      .put(`http://localhost:8000/api/libros/${id}/`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then(() => {
         alert("Libro actualizado correctamente");
         navigate("/admin");
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Error al actualizar el libro:", err);
         alert("Hubo un problema al guardar los cambios.");
       });
@@ -70,12 +84,18 @@ export default function EditarLibro() {
     <div className="editar-libro-container">
       <h1>Editar Libro</h1>
 
-      <form className="form-editar" onSubmit={handleSubmit} encType="multipart/form-data">
+      <form className="form-editar" onSubmit={handleSubmit}>
+        
         <label>Título</label>
         <input name="titulo" value={libro.titulo} onChange={handleChange} required />
 
-        <label>Autor</label>
-        <input name="autor" value={libro.autor} onChange={handleChange} required />
+        <label>Autor o Editorial</label>
+        <input
+          name="autor_o_editorial"
+          value={libro.autor_o_editorial}
+          onChange={handleChange}
+          required
+        />
 
         <label>Precio</label>
         <input name="precio" value={libro.precio} onChange={handleChange} required />
@@ -91,18 +111,26 @@ export default function EditarLibro() {
         </select>
 
         <label>Descripción</label>
-        <textarea name="descripcion" value={libro.descripcion} onChange={handleChange} required />
+        <textarea
+          name="descripcion"
+          value={libro.descripcion}
+          onChange={handleChange}
+          required
+        />
 
-        <label>Agregar imágenes</label>
-        <input type="file" name="imagen" onChange={handleFileChange} accept="image/*" />
+        <label>Agregar imagen</label>
+        <input type="file" onChange={handleFileChange} accept="image/*" />
+
         {imagenPreview && (
           <div className="imagen-preview">
             <p>Vista previa:</p>
-            <img src={imagenPreview} alt="Vista previa" style={{ maxWidth: "100%", marginTop: "10px" }} />
+            <img src={imagenPreview} alt="preview" />
           </div>
         )}
 
-        <button className="btn-guardar" type="submit">Guardar Cambios</button>
+        <button className="btn-guardar" type="submit">
+          Guardar Cambios
+        </button>
       </form>
     </div>
   );
