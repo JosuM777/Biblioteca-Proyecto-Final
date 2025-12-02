@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from .serializers import (
     UsuarioSerializer, LibroSerializer, AlquilerSerializer,
-    VendidoSerializer, IntercambioSerializer
+    VendidoSerializer, IntercambioSerializer, CarritoSerializer
 )
-from .models import Usuario, Libro, Alquiler, Vendido, Intercambio
+from .models import Usuario, Libro, Alquiler, Vendido, Intercambio, Carrito, CarritoItem
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -12,12 +12,11 @@ from django.contrib.auth import get_user_model, authenticate
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.permissions import IsAuthenticated
 
 User = get_user_model()
 
-# ===========================
 # Usuarios
-# ===========================
 
 
 class UsuarioCreateView(ListCreateAPIView):
@@ -78,9 +77,7 @@ class LoginView(APIView):
             return Response({"error": "Credenciales Incorrectas"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
-# ===========================
 # Libros
-# ===========================
 
 class LibroListCreateView(ListCreateAPIView):
     queryset = Libro.objects.all()
@@ -132,9 +129,18 @@ class LibroDetailView(RetrieveUpdateDestroyAPIView):
         return super().destroy(request, *args, **kwargs)
 
 
-# ===========================
+# livhro por id
+class LibroByIdView(ListCreateAPIView):
+    serializer_class = LibroSerializer
+
+    def get_queryset(self):
+        libro_id = self.kwargs["id"]
+        if libro_id:
+            return Libro.objects.filter(id=libro_id)
+        return Libro.objects.all()
+
+
 # Alquileres
-# ===========================
 
 class AlquilerListCreateView(ListCreateAPIView):
     queryset = Alquiler.objects.all()
@@ -172,9 +178,7 @@ class AlquilerDetailView(RetrieveUpdateDestroyAPIView):
         instance.delete()
 
 
-# ===========================
 # Extra
-# ===========================
 
 class LibroViewSet(viewsets.ModelViewSet):
     queryset = Libro.objects.all()
@@ -208,3 +212,57 @@ class LibrosAlquiladosView(APIView):
 class LibrosIntercambiadosView(APIView):
     def get(self, request):
         return Response({"intercambiados": Intercambio.objects.count()})
+    
+
+
+class CarritoView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        carrito, created = Carrito.objects.get_or_create(usuario=request.user)
+        serializer = CarritoSerializer(carrito)
+        return Response(serializer.data)
+
+    def post(self, request):
+        carrito, created = Carrito.objects.get_or_create(usuario=request.user)
+        serializer = CarritoSerializer(carrito, data=request.data, partial=True)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AgregarAlCarrito(APIView):
+    def post(self, request):
+        user = request.user
+        libro_id = request.data.get("libro_id")
+        cantidad = int(request.data.get("cantidad", 1))
+
+        carrito, _ = Carrito.objects.get_or_create(usuario=user)
+
+        try:
+            libro = Libro.objects.get(id=libro_id)
+        except Libro.DoesNotExist:
+            return Response({"error": "Libro no existe"}, status=404)
+
+        item, created = CarritoItem.objects.get_or_create(carrito=carrito, libro=libro)
+
+        if not created:
+            item.cantidad += cantidad
+
+        item.save()
+
+        return Response({"message": "Producto agregado"})
+
+
+class EliminarDelCarrito(APIView):
+    def delete(self, request, item_id):
+        try:
+            item = CarritoItem.objects.get(id=item_id)
+            item.delete()
+            return Response({"message": "Item eliminado"})
+        except CarritoItem.DoesNotExist:
+            return Response({"error": "Item no existe"}, status=404)
+

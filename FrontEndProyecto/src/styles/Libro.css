@@ -1,0 +1,150 @@
+/* ===== Contenedor General ===== */
+.detalle-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  animation: fadeIn 0.6s ease;
+}
+
+/* ===== Tarjeta principal ===== */
+.detalle-card {
+  display: flex;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(0,0,0,0.15);
+  max-width: 1100px;
+  padding: 25px;
+  gap: 35px;
+  animation: slideUp 0.6s ease;
+}
+
+/* ===== Imagen del libro ===== */
+.detalle-img {
+  width: 320px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  transition: transform 0.25s ease;
+}
+
+.detalle-img:hover {
+  transform: scale(1.05);
+}
+
+/* ===== Información ===== */
+.detalle-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.detalle-info h1 {
+  font-size: 2.3rem;
+  margin-bottom: 15px;
+  color: #222;
+}
+
+.detalle-info p {
+  font-size: 1.1rem;
+  margin: 8px 0;
+}
+
+.descripcion {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #444;
+  line-height: 1.4;
+}
+
+/* ===== Botones ===== */
+.acciones {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+/* Botón base */
+.btn {
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  transition: 0.25s ease;
+  font-weight: bold;
+}
+
+/* Comprar */
+.btn.comprar {
+  background: #4e73df;
+  color: white;
+}
+
+.btn.comprar:hover {
+  background: #3a56b7;
+  transform: translateY(-3px);
+}
+
+/* Intercambiar */
+.btn.intercambiar {
+  background: #1cc88a;
+  color: white;
+}
+
+.btn.intercambiar:hover {
+  background: #159e6b;
+  transform: translateY(-3px);
+}
+
+/* Alquilar */
+.btn.alquilar {
+  background: #f6c23e;
+  color: #222;
+}
+
+.btn.alquilar:hover {
+  background: #d4a32d;
+  transform: translateY(-3px);
+}
+
+/* Volver */
+.btn.volver {
+  margin-top: 20px;
+  background: #858796;
+  color: white;
+  width: 150px;
+}
+
+.btn.volver:hover {
+  background: #6c6e79;
+  transform: translateY(-3px);
+}
+
+/* ===== Animaciones ===== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .detalle-card {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+
+  .detalle-img {
+    width: 250px;
+  }
+}

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../styles/biblioteca.css";
 
 export default function Biblioteca() {
+  const navigate = useNavigate();
   const [libros, setLibros] = useState([]);
   const [filtro, setFiltro] = useState({
     busqueda: "",
@@ -79,7 +81,11 @@ export default function Biblioteca() {
             <p className="sin-resultados">No se encontraron libros </p>
           ) : (
             librosFiltrados.map((libro) => (
-              <div key={libro.id} className={`libro-card ${libro.estado}`}>
+              <div
+                key={libro.id}
+                className={`libro-card ${libro.estado}`}
+                onClick={() => navigate(`/libro-id/${libro.id}`)}
+              >
                 {libro.imagen && (
                   <img
                     src={libro.imagen}
@@ -101,13 +107,12 @@ export default function Biblioteca() {
                   <p>
                     <strong>Estado:</strong> {libro.estado}
                   </p>
-                  <p className="desc">{libro.descripcion}</p>
                 </div>
               </div>
             ))
           )}
         </div>
-      </main>
-    </div>
+      </main >
+    </div >
   );
 }

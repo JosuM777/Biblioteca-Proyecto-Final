@@ -35,12 +35,12 @@ export default function Mantenimiento() {
 
   const resetLibros = () =>
     confirmar("¿Restaurar TODOS los libros a valores iniciales?", () =>
-      axios.post("http://localhost:8000libros/")
+      axios.post("http://localhost:8000/api/libros/")
     );
 
   const resetUsuarios = () =>
     confirmar("¿Restaurar TODOS los usuarios? (excepto admin)", () =>
-      axios.post("http://localhost:8000/usuarios/")
+      axios.post("http://localhost:8000/api/usuarios/")
     );
 
   const limpiarCache = () =>
