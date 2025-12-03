@@ -1,21 +1,31 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import carritoImg from "../img/carritoImg.png";
 import "../styles/header.css";
 
 export default function Header() {
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // Si no hay usuario, usuario será null sin causar error
   const usuario = JSON.parse(localStorage.getItem("usuario"));
-
-  // Leer el rol solo si existe usuario
   const rol = usuario?.rol || null;
 
-  const cerrarSesion = () => {
-    localStorage.removeItem("usuario");
-    alert("Sesión cerrada");
-    navigate("/login");
-  };
+  const [count, setCount] = useState(0);
+
+  // Leer cantidad del carrito
+  useEffect(() => {
+    const carritoLocal = JSON.parse(localStorage.getItem("carrito")) || [];
+    setCount(carritoLocal.length);
+
+    const actualizar = () => {
+      const nuevo = JSON.parse(localStorage.getItem("carrito")) || [];
+      setCount(nuevo.length);
+    };
+
+    window.addEventListener("storageUpdate", actualizar);
+    return () => window.removeEventListener("storageUpdate", actualizar);
+  }, []);
+
 
   return (
     <header className="header">
@@ -47,23 +57,16 @@ export default function Header() {
 
         {rol === "autor" && (
           <>
-
             <button className="nav-btn" onClick={() => navigate("/crear-libro")}>
               Crear Libro
             </button>
-
           </>
         )}
-
 
         {usuario ? (
           <>
             <button className="nav-btn" onClick={() => navigate("/account")}>
               Mi Cuenta
-            </button>
-
-            <button className="btn-logout" onClick={cerrarSesion}>
-              Cerrar sesión
             </button>
           </>
         ) : (
@@ -77,6 +80,14 @@ export default function Header() {
             </button>
           </>
         )}
+
+        {location.pathname !== "/carrito" && (
+          <div className="header-cart" onClick={() => navigate("/carrito")}>
+            <img src={carritoImg} className="header-cart-icon" alt="Carrito" />
+            {count > 0 && <span className="header-cart-count">{count}</span>}
+          </div>
+        )}
+
       </nav>
     </header>
   );

@@ -74,23 +74,48 @@
   transform: scale(1.05);
 }
 
-/* BOTÓN CERRAR SESIÓN */
-.btn-logout {
-  background: #e63946;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 10px;
+
+/* ICONO DEL CARRITO EN HEADER */
+.header-cart {
+  position: relative;
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: 0.3s ease;
-  font-weight: 600;
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
 }
 
-.btn-logout:hover {
-  background: #c92c3c;
-  transform: scale(1.05);
+/* Ícono con fondo blanco circular */
+.header-cart-icon {
+  width: 30px;
+  height: 30px;
+  background: white;
+  padding: 8px;
+  border-radius: 50%;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+.header-cart-icon:hover {
+  transform: scale(1.12);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Burbuja roja del contador */
+.header-cart-count {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: red;
+  color: white;
+  padding: 2px 7px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 
 /* MODO RESPONSIVE */
 @media (max-width: 768px) {

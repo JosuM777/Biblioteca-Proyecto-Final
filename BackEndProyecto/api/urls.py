@@ -5,8 +5,7 @@ from .views import (
     LibroListCreateView, LibroDetailView,
     VendidoListCreateView, IntercambioListCreateView,
     LibrosVendidosView, LibrosAlquiladosView, LibrosIntercambiadosView,
-    UsuarioCreateView, UsuarioDetailView,LibroByIdView, CarritoView,
-    AgregarAlCarrito, EliminarDelCarrito
+    UsuarioCreateView, UsuarioDetailView,LibroByIdView, CompraCreateView
 )
 
 urlpatterns = [
@@ -24,7 +23,6 @@ urlpatterns = [
     path('intercambios/', IntercambioListCreateView.as_view(), name='intercambios'),
     path('intercambios/', LibrosIntercambiadosView.as_view()),
     path('libro-id/<int:id>/', LibroByIdView.as_view()),
-    path("carrito/", CarritoView.as_view()),
-    path("carrito/agregar/", AgregarAlCarrito.as_view()),
-    path("carrito/eliminar/<int:item_id>/", EliminarDelCarrito.as_view()),
-]
+    path('carrito/', CompraCreateView.as_view, name='carrito'),
+    
+    ]

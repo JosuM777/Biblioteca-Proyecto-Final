@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-from .models import Usuario, Libro, Alquiler, Intercambio, Vendido, Carrito, CarritoItem
+from .models import Usuario, Libro, Alquiler, Intercambio, Vendido, Compra
 
 
 class UsuarioSerializer(ModelSerializer):
@@ -65,21 +65,7 @@ class LibroMiniSerializer(serializers.ModelSerializer):
         fields = ["id", "titulo", "autor", "precio", "imagen"]
 
 
-class CarritoItemSerializer(serializers.ModelSerializer):
-    libro = LibroMiniSerializer(read_only=True)
-
+class CompraItemSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CarritoItem
-        fields = ["id", "libro", "cantidad", "carrito"]
-
-
-class CarritoSerializer(serializers.ModelSerializer):
-    items = CarritoItemSerializer(many=True, read_only=True)
-    total = serializers.SerializerMethodField()
-
-    class Meta:
-        model = Carrito
-        fields = ["id", "usuario", "items", "total"]
-
-    def get_total(self, obj):
-        return obj.total()
+        model = Compra
+        fields = "__all__"

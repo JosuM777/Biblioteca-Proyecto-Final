@@ -1,0 +1,159 @@
+/* ------------------------------
+   CONTENEDOR PRINCIPAL
+------------------------------ */
+.carrito-container {
+  width: 90%;
+  max-width: 900px;
+  margin: 100px auto 50px;
+  padding: 20px;
+  animation: fadeIn 0.7s ease;
+}
+
+/* ------------------------------
+   TÍTULO
+------------------------------ */
+.titulo-carrito {
+  font-size: 32px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* ------------------------------
+   MENSAJE CARRITO VACÍO
+------------------------------ */
+.carrito-vacio {
+  text-align: center;
+  font-size: 18px;
+  color: #777;
+}
+
+/* ------------------------------
+   LISTA DE ITEMS
+------------------------------ */
+.carrito-items {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ------------------------------
+   TARJETA DE CADA ITEM
+------------------------------ */
+.carrito-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  background: #ffffff;
+  padding: 15px;
+  border-radius: 15px;
+
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.carrito-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+}
+
+.carrito-item img {
+  width: 90px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.carrito-item .info {
+  flex: 1;
+}
+
+.carrito-item h3 {
+  margin: 0;
+}
+
+.precio {
+  font-size: 18px;
+  font-weight: 600;
+  color: #27ae60;
+}
+
+/* ------------------------------
+   TOTAL
+------------------------------ */
+.carrito-total {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.btn-pagar {
+  background: #6c5ce7;
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 50px;
+  font-size: 18px;
+  cursor: pointer;
+
+  transition: transform 0.2s ease, background 0.3s ease;
+}
+
+.btn-pagar:hover {
+  background: #5f4ded;
+  transform: scale(1.05);
+}
+
+/* ------------------------------
+   BOTÓN FLOTANTE (CÍRCULO)
+------------------------------ */
+.carrito-btn-flotante {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+
+  width: 60px;
+  height: 60px;
+
+  background: #6c5ce7;
+  color: white;
+
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 26px;
+  cursor: pointer;
+
+  box-shadow: 0 5px 20px rgba(0,0,0,0.25);
+  transition: transform 0.3s ease, background 0.3s ease;
+  z-index: 999;
+}
+
+.carrito-btn-flotante:hover {
+  transform: scale(1.1);
+  background: #5f4ded;
+}
+
+/* ------------------------------
+   ANIMACIONES
+------------------------------ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px);}
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ------------------------------
+  RESPONSIVE
+------------------------------ */
+@media (max-width: 600px) {
+  .carrito-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .carrito-item img {
+    width: 120px;
+    height: 160px;
+  }
+}

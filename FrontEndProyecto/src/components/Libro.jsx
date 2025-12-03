@@ -8,6 +8,14 @@ export default function LibroDetalles() {
   const navigate = useNavigate();
   const [libro, setLibro] = useState(null);
 
+  // USUARIO ACTUAL
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const carritoKey = usuario ? `carrito_${usuario.id}` : "carrito_invitado";
+
+  const [carritoLocal, setCarritoLocal] = useState(
+    JSON.parse(localStorage.getItem(carritoKey)) || []
+  );
+
   useEffect(() => {
     axios
       .get(`http://127.0.0.1:8000/api/libro-id/${id}/`)
@@ -17,15 +25,44 @@ export default function LibroDetalles() {
 
   if (!libro) return <h2 className="cargando">Cargando...</h2>;
 
-    const agregarCarrito = async () => {
-    await axios.post("http://localhost:8000/carrito/agregar/", {
-      libro_id: libro.id,
-      cantidad: 1,
-    }, {
-      withCredentials: true
-    });
-  
-    alert("Agregado al carrito");
+  // 🔥 AGREGAR AL CARRITO CON CANTIDAD
+  const agregarCarrito = () => {
+    if (!usuario) {
+      alert("Debe iniciar sesión para agregar libros al carrito");
+      return;
+    }
+
+    // Buscar si el libro ya existe en el carrito
+    const existente = carritoLocal.find((item) => item.id === libro.id);
+
+    let nuevoCarrito;
+
+    if (existente) {
+      // YA EXISTE → aumentar cantidad
+      nuevoCarrito = carritoLocal.map((item) =>
+        item.id === libro.id
+          ? { ...item, cantidad: item.cantidad + 1 }
+          : item
+      );
+    } else {
+      // NO EXISTE → agregar con cantidad 1
+      nuevoCarrito = [
+        ...carritoLocal,
+        {
+          id: libro.id,
+          titulo: libro.titulo,
+          precio: libro.precio,
+          imagen: libro.imagen,
+          cantidad: 1,
+        },
+      ];
+    }
+
+    // Guardar en localStorage
+    localStorage.setItem(carritoKey, JSON.stringify(nuevoCarrito));
+
+    // Actualizar estado
+    setCarritoLocal(nuevoCarrito);
   };
 
   return (
@@ -47,8 +84,7 @@ export default function LibroDetalles() {
           </p>
 
           <div className="acciones">
-      <button onClick={agregarCarrito}>Agregar al carrito</button>
-
+            <button onClick={agregarCarrito}>Agregar al carrito</button>
             <button className="btn intercambiar">Intercambiar</button>
             <button className="btn alquilar">Alquilar</button>
           </div>

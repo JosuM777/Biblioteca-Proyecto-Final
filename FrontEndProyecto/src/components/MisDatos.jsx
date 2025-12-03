@@ -18,6 +18,12 @@ export default function MisDatos() {
 
   if (!usuario) return <p>Cargando datos del usuario...</p>;
 
+  const cerrarSesion = () => {
+    localStorage.removeItem("usuario");
+    alert("Sesión cerrada");
+    navigate("/login");
+  };
+
   return (
     <div className="misdatos-card">
       <h2>Mis Datos</h2>
@@ -43,9 +49,16 @@ export default function MisDatos() {
         <p><strong>Dirección:</strong> {usuario.direccion}</p>
       </div>
 
-      <button className="btn-editar" onClick={irEditarPerfil}>
-        Editar Perfil
-      </button>
+      <div className="cuenta-botones">
+        <button className="btn-editar" onClick={irEditarPerfil}>
+          Editar Perfil
+        </button>
+
+        <button className="btn-logout" onClick={cerrarSesion}>
+          Cerrar sesión
+        </button>
+      </div>
+
     </div>
   );
 }

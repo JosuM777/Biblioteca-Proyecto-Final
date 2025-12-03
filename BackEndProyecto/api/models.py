@@ -84,28 +84,8 @@ class Vendido(models.Model):
         return f"{self.libro.titulo} vendido a {self.usuario.email}"
     
 
-class Carrito(models.Model):
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name="carrito")
-    creado = models.DateTimeField(auto_now_add=True)
 
-    def total(self):
-        return sum(item.subtotal() for item in self.items.all())
-
-    def __str__(self):
-        return f"Carrito de {self.usuario.username}"
-
-
-class CarritoItem(models.Model):
-    carrito = models.ForeignKey(Carrito, on_delete=models.CASCADE, related_name="items")
+class Compra(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     libro = models.ForeignKey(Libro, on_delete=models.CASCADE)
-    cantidad = models.IntegerField(default=1)
-
-    class Meta:
-        unique_together = ("carrito", "libro")
-
-    def subtotal(self):
-        return self.cantidad * self.libro.precio  # IMPORTANTE: libro debe tener precio
-
-    def __str__(self):
-        return f"{self.libro.titulo} x {self.cantidad}"
-    
+    cantidad = models.PositiveIntegerField(default=1)

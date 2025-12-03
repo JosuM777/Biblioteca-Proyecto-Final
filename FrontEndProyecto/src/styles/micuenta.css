@@ -115,3 +115,32 @@
 .btn-editar:hover {
   background: #005dc1;
 }
+
+/* BOTÓN CERRAR SESIÓN */
+.btn-logout {
+  margin-top: 10px;
+  padding: 10px 16px;
+  background: #e63946;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-logout:hover {
+  background: #c92c3c;
+  transform: scale(1.05);
+}
+
+/* CONTENEDOR PARA BOTONES EDITAR mas CERRAR SESIÓN */
+.cuenta-botones {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+/* Asegura que ambos botones tengan el mismo tamaño visual */
+.cuenta-botones button {
+  flex: 1;
+}
