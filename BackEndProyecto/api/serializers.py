@@ -62,7 +62,7 @@ class IntercambioSerializer(ModelSerializer):
 class LibroMiniSerializer(serializers.ModelSerializer):
     class Meta:
         model = Libro
-        fields = ["id", "titulo", "autor", "precio", "imagen"]
+        fields = ["id", "titulo", "autor_o_editorial", "precio", "imagen", ""]
 
 
 class CompraItemSerializer(serializers.ModelSerializer):

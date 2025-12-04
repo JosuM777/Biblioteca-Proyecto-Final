@@ -17,6 +17,7 @@ export default function AppRouter() {
       <Route path="/libro/:id" element={<LibroDetalle />} />
       <Route path="/crear" element={<CrearLibro />} />
       <Route path="/editar/:id" element={<EditarLibro />} />
+      <Route path="/carrito" element={<Carrito />} />
     </Routes>
   );
 }

@@ -109,6 +109,7 @@ export default function CrearLibro() {
           <option value="juvenil">Juvenil (YA)</option>
           <option value="no-ficcion">No ficción</option>
           <option value="historico">Histórico</option>
+          <option value="anime">anime</option>
         </select>
 
         <input

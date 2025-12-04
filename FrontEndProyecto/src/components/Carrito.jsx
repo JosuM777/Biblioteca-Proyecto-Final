@@ -7,66 +7,62 @@ export default function Carrito() {
 
   // Usuario actual
   const usuario = JSON.parse(localStorage.getItem("usuario"));
-  const carritoKey = usuario ? `carrito_${usuario.id}` : null;
 
-  // ================================
+  // Clave estable del carrito
+  const carritoKey = usuario ? `carrito_${usuario.id}` : "carrito_guest";
+
   // Cargar carrito automáticamente
-  // ================================
   useEffect(() => {
-    if (!usuario) {
-      setCarrito([]);
-      setLoading(false);
-      return;
-    }
-
     const cargarCarrito = () => {
-      const carritoLocal = localStorage.getItem(carritoKey);
-      setCarrito(carritoLocal ? JSON.parse(carritoLocal) : []);
+      const carritoLocal = JSON.parse(localStorage.getItem(carritoKey)) || [];
+      setCarrito(carritoLocal);
       setLoading(false);
     };
 
     cargarCarrito();
 
-    // Actualizar carrito al volver a ventana
+    // Actualizar cuando vuelves a la pestaña
     window.addEventListener("focus", cargarCarrito);
-    return () => window.removeEventListener("focus", cargarCarrito);
-  }, [usuario, carritoKey]);
 
-  // Guardar cambios
+    // Actualizar cuando otro componente modifique carrito
+    const syncManual = () => cargarCarrito();
+    window.addEventListener("storageUpdate", syncManual);
+
+    return () => {
+      window.removeEventListener("focus", cargarCarrito);
+      window.removeEventListener("storageUpdate", syncManual);
+    };
+  }, [carritoKey]);
+
+  // Guardar cambios y notificar a Header
   const guardarCarrito = (nuevoCarrito) => {
     setCarrito(nuevoCarrito);
     localStorage.setItem(carritoKey, JSON.stringify(nuevoCarrito));
+
+    // Avisar a Header para que actualice el contador
+    window.dispatchEvent(new Event("storageUpdate"));
   };
 
-  // ================================
   // Aumentar cantidad
-  // ================================
   const aumentarCantidad = (id) => {
     const nuevo = carrito.map((item) =>
       item.id === id ? { ...item, cantidad: item.cantidad + 1 } : item
     );
-
     guardarCarrito(nuevo);
   };
 
-  // ================================
   // Disminuir cantidad
-  // ================================
   const disminuirCantidad = (id) => {
     const nuevo = carrito
       .map((item) =>
         item.id === id
           ? { ...item, cantidad: Math.max(1, item.cantidad - 1) }
           : item
-      )
-      .filter((item) => item.cantidad > 0);
-
+      );
     guardarCarrito(nuevo);
   };
 
-  // ================================
-  //Eliminar item
-  // ================================
+  // Eliminar item
   const eliminarItem = (id) => {
     const nuevo = carrito.filter((item) => item.id !== id);
     guardarCarrito(nuevo);
@@ -90,14 +86,12 @@ export default function Carrito() {
                 <h3>{item.titulo}</h3>
                 <p className="precio">₡{item.precio}</p>
 
-                {/* CANTIDAD */}
                 <div className="cantidad">
                   <button onClick={() => disminuirCantidad(item.id)}>-</button>
                   <span>{item.cantidad}</span>
                   <button onClick={() => aumentarCantidad(item.id)}>+</button>
                 </div>
 
-                {/* ELIMINAR */}
                 <button
                   className="btn-eliminar"
                   onClick={() => eliminarItem(item.id)}
@@ -110,7 +104,6 @@ export default function Carrito() {
         </div>
       )}
 
-      {/* BOTÓN DE PAGO */}
       {carrito.length > 0 && (
         <div className="carrito-total">
           <button className="btn-pagar">Proceder al pago</button>

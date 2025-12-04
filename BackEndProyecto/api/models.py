@@ -25,6 +25,7 @@ class Usuario(AbstractUser):
 
 class Libro(models.Model):
     titulo = models.CharField(max_length=255)
+    autor_o_editorial = models.CharField(max_length=255)
     descripcion = models.TextField()
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     genero = models.CharField(max_length=100)

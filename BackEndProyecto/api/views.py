@@ -117,7 +117,7 @@ class LibroListCreateView(ListCreateAPIView):
 class LibroDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Libro.objects.all()
     serializer_class = LibroSerializer
-    # ← añadido para soportar imágenes
+    # añadido para soportar imágenes
     parser_classes = [MultiPartParser, FormParser]
 
     def destroy(self, request, *args, **kwargs):
