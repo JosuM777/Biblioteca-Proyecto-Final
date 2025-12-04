@@ -1,21 +1,72 @@
+/* 4 columnas */
+.libros-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+  justify-items: center;
+}
+
+/* TARJETA MÁS PEQUEÑA */
 .libro-card {
-  width: 180px;
+  width: 160px;                       /* MÁS PEQUEÑA */
   padding: 10px;
-  border-radius: 10px;
-  background: #fff;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  background: #ffffff;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.05);
   cursor: pointer;
   text-align: center;
-  transition: 0.2s;
+  transition: all 0.25s ease;
+  overflow: hidden;
 }
 
 .libro-card:hover {
-  transform: scale(1.05);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
 }
 
+/* IMAGEN REDUCIDA */
 .libro-img {
   width: 100%;
-  height: 230px;
+  height: 200px;                      /* MÁS BAJA */
   object-fit: cover;
-  border-radius: 7px;
+  border-radius: 10px;
+  background: #f3f3f3;
+  transition: all 0.3s ease;
+}
+
+.libro-card:hover .libro-img {
+  transform: scale(1.03);
+}
+
+/* TEXTOS */
+.libro-info h3 {
+  font-size: 0.95rem;                 /* MÁS PEQUEÑO */
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.libro-info p {
+  font-size: 0.78rem;                 /* MÁS PEQUEÑO */
+  margin: 3px 0;
+  color: #555;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .libros-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .libros-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .libros-grid {
+    grid-template-columns: 1fr;
+  }
 }

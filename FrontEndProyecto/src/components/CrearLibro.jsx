@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import "../styles/CrearLibro.css";
 
 export default function CrearLibro() {
   const [formData, setFormData] = useState({
@@ -13,24 +14,21 @@ export default function CrearLibro() {
     creador: 1,
   });
 
-  // También podrías tener un estado para errores o para el estado de envío
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
-    // Si files existe (input type="file"), actualizamos el campo imagen, 
-    // de lo contrario actualizamos con el value normal
     if (files) {
       setFormData((prev) => ({
         ...prev,
-        [name]: files[0],  // archivo
+        [name]: files[0],
       }));
     } else {
       setFormData((prev) => ({
         ...prev,
-        [name]: value,     // valor normal
+        [name]: value,
       }));
     }
   };
@@ -42,10 +40,7 @@ export default function CrearLibro() {
 
     const data = new FormData();
     for (const key in formData) {
-      // Solo añadir al FormData si el valor no es null
-      if (formData[key] !== null) {
-        data.append(key, formData[key]);
-      }
+      if (formData[key] !== null) data.append(key, formData[key]);
     }
 
     try {
@@ -54,7 +49,6 @@ export default function CrearLibro() {
       });
       alert("Libro creado exitosamente");
 
-      // Resetear formulario
       setFormData({
         titulo: "",
         descripcion: "",
@@ -75,12 +69,15 @@ export default function CrearLibro() {
 
   return (
     <div className="crear-libro-container">
-      <h1>Agregar Libro</h1>
+      <h1 className="crear-libro-title">Agregar Libro</h1>
+
       <form onSubmit={handleSubmit} className="crear-libro-form">
+        
         <input
           type="text"
           name="titulo"
           placeholder="Título"
+          className="input-text"
           value={formData.titulo}
           onChange={handleChange}
           required
@@ -90,24 +87,35 @@ export default function CrearLibro() {
           type="text"
           name="autor_o_editorial"
           placeholder="Autor o Editorial"
+          className="input-text"
           value={formData.autor_o_editorial}
           onChange={handleChange}
           required
         />
 
-        <input
-          type="text"
+        <select
+          className="select-genero"
           name="genero"
-          placeholder="Género"
           value={formData.genero}
           onChange={handleChange}
           required
-        />
+        >
+          <option value="">Géneros Literarios</option>
+          <option value="fantasia">Fantasía</option>
+          <option value="ciencia-ficcion">Ciencia ficción</option>
+          <option value="romance">Romance</option>
+          <option value="terror">Terror / Horror</option>
+          <option value="misterio">Misterio / Thriller / Suspenso</option>
+          <option value="juvenil">Juvenil (YA)</option>
+          <option value="no-ficcion">No ficción</option>
+          <option value="historico">Histórico</option>
+        </select>
 
         <input
           type="number"
           name="precio"
           placeholder="Precio"
+          className="input-number"
           value={formData.precio}
           onChange={handleChange}
           required
@@ -116,6 +124,7 @@ export default function CrearLibro() {
         <textarea
           name="descripcion"
           placeholder="Descripción"
+          className="textarea-descripcion"
           value={formData.descripcion}
           onChange={handleChange}
           required
@@ -123,6 +132,7 @@ export default function CrearLibro() {
 
         <select
           name="estado"
+          className="select-estado"
           value={formData.estado}
           onChange={handleChange}
         >
@@ -134,16 +144,21 @@ export default function CrearLibro() {
         <input
           type="file"
           name="imagen"
+          className="input-file"
           accept="image/*"
           onChange={handleChange}
         />
 
-        <button type="submit" disabled={isSubmitting}>
+        <button
+          type="submit"
+          className="btn-submit"
+          disabled={isSubmitting}
+        >
           {isSubmitting ? "Creando..." : "Crear Libro"}
         </button>
       </form>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p className="crear-libro-error">{error}</p>}
     </div>
   );
 }

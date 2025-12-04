@@ -6,26 +6,29 @@ import "../styles/biblioteca.css";
 export default function Biblioteca() {
   const navigate = useNavigate();
   const [libros, setLibros] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [filtro, setFiltro] = useState({
     busqueda: "",
     genero: "",
     estado: "",
   });
 
-  // Cargar todos los libros al iniciar
   useEffect(() => {
     axios
       .get("http://localhost:8000/api/libros/")
       .then((res) => setLibros(res.data))
-      .catch((err) => console.error("Error cargando libros:", err));
+      .catch((err) => console.error("Error cargando libros:", err))
+      .finally(() => setLoading(false));
   }, []);
 
-  // Filtrar libros según los criterios seleccionados
+  // FILTRADO INTELIGENTE
   const librosFiltrados = libros.filter((libro) => {
+    const txt = filtro.busqueda.toLowerCase();
+
     const coincideBusqueda =
-      libro.titulo.toLowerCase().includes(filtro.busqueda.toLowerCase()) ||
+      libro.titulo.toLowerCase().includes(txt) ||
       (libro.autor_o_editorial &&
-        libro.autor_o_editorial.toLowerCase().includes(filtro.busqueda.toLowerCase()));
+        libro.autor_o_editorial.toLowerCase().includes(txt));
 
     const coincideGenero =
       filtro.genero === "" || libro.genero === filtro.genero;
@@ -36,11 +39,14 @@ export default function Biblioteca() {
     return coincideBusqueda && coincideGenero && coincideEstado;
   });
 
-  // Extraer géneros únicos del listado
-  const generosUnicos = [...new Set(libros.map((l) => l.genero))];
+  // Géneros únicos ordenados
+  const generosUnicos = [...new Set(libros.map((l) => l.genero))]
+    .filter((g) => g && g !== "")
+    .sort();
 
   return (
     <div className="biblioteca-layout">
+      {/* SIDEBAR DE FILTROS */}
       <aside className="sidebar-filtros">
         <h2>Filtros</h2>
 
@@ -48,7 +54,9 @@ export default function Biblioteca() {
           type="text"
           placeholder="Buscar por título o autor..."
           value={filtro.busqueda}
-          onChange={(e) => setFiltro({ ...filtro, busqueda: e.target.value })}
+          onChange={(e) =>
+            setFiltro({ ...filtro, busqueda: e.target.value })
+          }
         />
 
         <select
@@ -74,45 +82,45 @@ export default function Biblioteca() {
         </select>
       </aside>
 
+      {/* CONTENIDO PRINCIPAL */}
       <main className="biblioteca-main">
-        <h1> Biblioteca ReBook</h1>
-        <div className="libros-grid">
-          {librosFiltrados.length === 0 ? (
-            <p className="sin-resultados">No se encontraron libros </p>
-          ) : (
-            librosFiltrados.map((libro) => (
-              <div
-                key={libro.id}
-                className={`libro-card ${libro.estado}`}
-                onClick={() => navigate(`/libro-id/${libro.id}`)}
-              >
-                {libro.imagen && (
-                  <img
-                    src={libro.imagen}
-                    alt={libro.titulo}
-                    className="libro-img"
-                  />
-                )}
-                <div className="libro-info">
-                  <h3>{libro.titulo}</h3>
-                  <p>
-                    <strong>Autor:</strong> {libro.autor_o_editorial}
-                  </p>
-                  <p>
-                    <strong>Género:</strong> {libro.genero}
-                  </p>
-                  <p>
-                    <strong>Precio:</strong> ₡{libro.precio}
-                  </p>
-                  <p>
-                    <strong>Estado:</strong> {libro.estado}
-                  </p>
+        <h1>Biblioteca ReBook</h1>
+
+        {loading ? (
+          <p className="cargando">Cargando libros...</p>
+        ) : (
+          <div className="libros-grid">
+            {librosFiltrados.length === 0 ? (
+              <p className="sin-resultados">No se encontraron libros</p>
+            ) : (
+              librosFiltrados.map((libro) => (
+                <div
+                  key={libro.id}
+                  className={`libro-card estado-${libro.estado}`}
+                  onClick={() => navigate(`/libro-id/${libro.id}`)}
+                >
+                  {libro.imagen ? (
+                    <img src={libro.imagen} alt={libro.titulo} className="libro-img" />
+                  ) : (
+                    <div className="placeholder-img">Sin imagen</div>
+                  )}
+
+                  <div className="libro-info">
+                    <h3>{libro.titulo}</h3>
+                    <p><strong>Autor:</strong> {libro.autor_o_editorial}</p>
+                    <p><strong>Género:</strong> {libro.genero}</p>
+                    <p><strong>Precio:</strong> ₡{libro.precio}</p>
+
+                    <span className={`estado-tag tag-${libro.estado}`}>
+                      {libro.estado.toUpperCase()}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))
-          )}
-        </div>
-      </main >
-    </div >
+              ))
+            )}
+          </div>
+        )}
+      </main>
+    </div>
   );
 }
