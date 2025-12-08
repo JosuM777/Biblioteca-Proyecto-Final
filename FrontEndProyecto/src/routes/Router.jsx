@@ -18,6 +18,8 @@ export default function AppRouter() {
       <Route path="/crear" element={<CrearLibro />} />
       <Route path="/editar/:id" element={<EditarLibro />} />
       <Route path="/carrito" element={<Carrito />} />
+      <Route path="/usuario/:id" element={<UsuarioPerfil />} />
+
     </Routes>
   );
 }

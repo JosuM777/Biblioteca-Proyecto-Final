@@ -235,6 +235,44 @@
   color: #60a5fa;
 }
 
+/* Usuarios Destacados */
+.usuarios-carousel {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scroll-behavior: smooth;
+}
+
+.usuario-card {
+  min-width: 130px;
+  background: rgb(25, 24, 24);
+  padding: 15px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.usuario-card:hover {
+  transform: scale(1.05);
+}
+
+.usuario-img {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border: 3px solid #6a5acd;
+}
+
+.rol {
+  font-size: 14px;
+  color: gray;
+}
+
 
 @media (max-width: 700px) {
   .title {

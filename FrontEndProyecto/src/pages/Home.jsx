@@ -5,16 +5,35 @@ import axios from "axios";
 
 export default function Home() {
   const [libros, setLibros] = useState([]);
-  const [trending, setTrending] = useState([]);
+  const [destacados, setDestacados] = useState([]);
+
 
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/api/libros/")
       .then(res => {
         setLibros(res.data.slice(0, 10)); // primeros 10 libros
-        setTrending(res.data.slice(10, 20)); // siguientes 10
       })
       .catch(err => console.error("Error cargando libros", err));
   }, []);
+
+  useEffect(() => {
+  axios.get("http://127.0.0.1:8000/api/libros/")
+    .then(res => {
+      setLibros(res.data.slice(0, 10));
+    })
+    .catch(err => console.error("Error cargando libros", err));
+
+  axios.get("http://127.0.0.1:8000/api/usuarios/")
+    .then(res => {
+      const destacadosFiltrados = res.data.filter(
+        u => u.rol === "autor" || u.rol === "usuario"
+      );
+
+      setDestacados(destacadosFiltrados);
+    })
+    .catch(err => console.error("Error usuarios", err));
+}, []);
+
 
   return (
     <div className="home-nuevo">
@@ -71,22 +90,29 @@ export default function Home() {
         </div>
       </section>
 
-      {/*TRENDING*/}
-      <section className="seccion trending">
-        <h2 className="titulo-seccion">Tendencias</h2>
+{/* USUARIOS DESTACADOS */}
+<section className="seccion">
+  <h2 className="titulo-seccion">Usuarios Destacados</h2>
 
-        <div className="trending-grid">
-          {trending.map(book => (
-            <Link to={`/libro/${book.id}`} key={book.id} className="trending-card">
-              <img src={book.imagen} alt={book.titulo} />
-              <div className="overlay-info">
-                <h3>{book.titulo}</h3>
-                <span>{book.precio ? "₡" + book.precio : "Gratis"}</span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
+  <div className="usuarios-carousel">
+    {destacados.map(user => (
+      <Link
+        to={`/usuario/${user.id}`}
+        key={user.id}
+        className="usuario-card"
+      >
+        <img
+          src={user.foto_perfil}
+          alt={user.username}
+          className="usuario-img"
+        />
+
+        <h3>{user.username}</h3>
+        <p className="rol">{user.rol}</p>
+      </Link>
+    ))}
+  </div>
+</section>
 
     </div>
   );

@@ -12,10 +12,10 @@ import EditarPerfil from "./components/EditarPerfil";
 import AdminPage from "./pages/AdminPage";
 import LibroDetalle from "./pages/LibroDetalle";
 import EditarLibro from "./components/EditarLibro";
-import Mantenimiento from "./pages/Mantenimiento";
 import CrearUsuario from "./components/CrearUsuario";
 import Libro from "./components/Libro";
 import Carrito from "./components/Carrito";
+import UsuarioPerfil from "./pages/UsuarioPerfil";
 
 
 
@@ -37,10 +37,10 @@ export default function App() {
             <Route path="/libro/:id" element={<LibroDetalle />} />
             <Route path="/editar/:id" element={<EditarLibro />} />
             <Route path="/admin/editar/:id" element={<EditarLibro />} />
-            <Route path="/mantenimiento" element={<Mantenimiento />} />
             <Route path="/crear-usuario" element={<CrearUsuario />} />
             <Route path="/libro-id/:id" element={<Libro/>} />
             <Route path="/carrito" element={<Carrito/>} />
+            <Route path="/usuario/:id" element={<UsuarioPerfil />} />
 
           </Routes>
         </main>

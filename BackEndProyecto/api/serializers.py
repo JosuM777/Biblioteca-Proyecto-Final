@@ -1,3 +1,4 @@
+from .models import ContactoAutor
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from .models import Usuario, Libro, Alquiler, Intercambio, Vendido, Compra
@@ -68,4 +69,9 @@ class LibroMiniSerializer(serializers.ModelSerializer):
 class CompraItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Compra
+        fields = "__all__"
+
+class ContactoAutorSerializer(ModelSerializer):
+    class Meta:
+        model = ContactoAutor
         fields = "__all__"

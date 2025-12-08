@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from .models import ContactoAutor
+from .serializers import ContactoAutorSerializer
 from .serializers import (
     UsuarioSerializer, LibroSerializer, AlquilerSerializer,
     VendidoSerializer, IntercambioSerializer, CompraItemSerializer
@@ -217,3 +218,9 @@ class CompraCreateView(ListCreateAPIView):
     queryset = Compra.objects.all()
     serializer_class = CompraItemSerializer
 
+
+# ContactoAutor
+
+class ContactoAutorCreateView(ListCreateAPIView):
+    queryset = ContactoAutor.objects.all()
+    serializer_class = ContactoAutorSerializer

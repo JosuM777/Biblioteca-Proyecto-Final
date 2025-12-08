@@ -8,7 +8,7 @@ export default function LibroDetalle() {
   const [libro, setLibro] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:8000/libros/${id}`)
+    axios.get(`http://localhost:8000/api/libros/${id}`)
       .then(res => setLibro(res.data))
       .catch(err => console.log(err));
   }, [id]);
@@ -17,7 +17,7 @@ export default function LibroDetalle() {
 
   return (
     <div className="detalle-container">
-      <img src={libro.img} alt={libro.titulo} className="detalle-img" />
+      <img src={libro.imagen} alt={libro.titulo} className="detalle-img" />
 
       <div className="detalle-info">
         <h1>{libro.titulo}</h1>

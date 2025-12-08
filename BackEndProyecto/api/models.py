@@ -90,3 +90,15 @@ class Compra(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE)
     libro = models.ForeignKey(Libro, on_delete=models.CASCADE)
     cantidad = models.PositiveIntegerField(default=1)
+
+# Contact autor
+
+class ContactoAutor(models.Model):
+    nombre = models.CharField(max_length=255)
+    email = models.EmailField()
+    mensaje = models.TextField()
+    fecha_envio = models.DateTimeField(auto_now_add=True)
+    autor = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='contactos_recibidos')
+
+    def __str__(self):
+        return f"Mensaje de {self.nombre} - {self.email}"

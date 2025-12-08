@@ -1,5 +1,5 @@
 /* LAYOUT GENERAL */
-.biblioteca-layout {
+.rb-biblioteca-layout {
   display: grid;
   grid-template-columns: 260px 1fr;
   gap: 30px;
@@ -10,7 +10,7 @@
 }
 
 /* SIDEBAR DE FILTROS */
-.sidebar-filtros {
+.rb-sidebar-filtros {
   background: #fff;
   border: 1px solid #e6e6e6;
   border-radius: 12px;
@@ -18,42 +18,45 @@
   height: fit-content;
   position: sticky;
   top: 30px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+  box-shadow:  2px 5px rgba(0,0,0,0.03);
 }
 
-.sidebar-filtros h2 {
+.rb-sidebar-filtros h2 {
   font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 18px;
   color: #222;
 }
 
-.sidebar-filtros input,
-.sidebar-filtros select {
-  width: 100%;
+.rb-sidebar-filtros input,
+.rb-sidebar-filtros select,
+.rb-input,
+.rb-select {
+  width: 90%;
   padding: 10px 12px;
   margin-bottom: 14px;
   border-radius: 8px;
   border: 1px solid #ccc;
   background: #f9f9f9;
   font-size: 0.95rem;
-  outline: none;
   transition: border-color 0.2s ease, background 0.2s ease;
 }
 
-.sidebar-filtros input:focus,
-.sidebar-filtros select:focus {
+.rb-sidebar-filtros input:focus,
+.rb-sidebar-filtros select:focus,
+.rb-input:focus,
+.rb-select:focus {
   border-color: #007bff;
   background: #fff;
 }
 
 /* CONTENEDOR PRINCIPAL */
-.biblioteca-main {
+.rb-biblioteca-main {
   display: flex;
   flex-direction: column;
 }
 
-.biblioteca-main h1 {
+.rb-biblioteca-main h1 {
   font-size: 2rem;
   font-weight: 800;
   color: #1a1a1a;
@@ -63,14 +66,14 @@
 }
 
 /* GRID DE LIBROS */
-.libros-grid {
+.rb-libros-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
 
 /* TARJETA DE LIBRO */
-.libro-card {
+.rb-libro-card {
   position: relative;
   background: #fff;
   border: 1px solid #e9e9e9;
@@ -79,61 +82,63 @@
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   display: flex;
   flex-direction: column;
+  cursor: pointer;
 }
 
-.libro-card:hover {
+.rb-libro-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
 }
 
 /* IMAGEN */
-.libro-img {
+.rb-libro-img {
   width: 100%;
   height: 260px;
   object-fit: cover;
   background-color: #f2f2f2;
 }
 
+.rb-placeholder-img {
+  height: 260px;
+  background: #eaeaea;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #777;
+  font-size: 0.9rem;
+}
+
 /* INFORMACIÓN */
-.libro-info {
+.rb-libro-info {
   padding: 16px 18px;
   flex-grow: 1;
 }
 
-.libro-info h3 {
+.rb-libro-info h3 {
   font-size: 1.1rem;
   font-weight: 600;
   color: #222;
   margin-bottom: 6px;
 }
 
-.libro-info p {
+.rb-libro-info p {
   font-size: 0.9rem;
   color: #555;
   margin: 4px 0;
 }
 
-.libro-info .desc {
-  margin-top: 8px;
-  color: #666;
-  font-size: 0.88rem;
-  line-height: 1.3;
-  height: 48px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.libro-info strong {
+.rb-libro-info strong {
   color: #222;
 }
 
-.libro-info .precio {
+/* PRECIO */
+.rb-libro-info .precio {
   font-weight: 700;
   color: #007bff;
 }
 
 /* ESTADO */
-.libro-estado {
+.rb-estado-tag {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -145,41 +150,57 @@
   text-transform: capitalize;
 }
 
-.libro-estado.disponible { background-color: #2ecc71; }
-.libro-estado.alquilado { background-color: #f1c40f; color: #333; }
-.libro-estado.vendido { background-color: #e74c3c; }
+.rb-tag-disponible {
+  background-color: #2ecc71;
+}
+
+.rb-tag-alquilado {
+  background-color: #f1c40f;
+  color: #333;
+}
+
+.rb-tag-vendido {
+  background-color: #e74c3c;
+}
 
 /* SIN RESULTADOS */
-.sin-resultados {
+.rb-sin-resultados {
   font-size: 1rem;
   color: #888;
   text-align: center;
   padding: 40px 0;
 }
 
+/* LOADING */
+.rb-cargando {
+  text-align: center;
+  color: #777;
+}
+
 /* RESPONSIVE */
 @media (max-width: 1024px) {
-  .biblioteca-layout {
+  .rb-biblioteca-layout {
     grid-template-columns: 220px 1fr;
     padding: 30px 20px;
   }
-  .libros-grid {
+
+  .rb-libros-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 768px) {
-  .biblioteca-layout {
+  .rb-biblioteca-layout {
     grid-template-columns: 1fr;
   }
 
-  .sidebar-filtros {
+  .rb-sidebar-filtros {
     position: static;
     width: 100%;
     margin-bottom: 20px;
   }
 
-  .libros-grid {
+  .rb-libros-grid {
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   }
 }
