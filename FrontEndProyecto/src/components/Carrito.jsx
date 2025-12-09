@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "../styles/carrito.css";
 
 export default function Carrito() {
   const [loading, setLoading] = useState(true);
   const [carrito, setCarrito] = useState([]);
+  const [mostrarPago, setMostrarPago] = useState(false);
 
   // Usuario actual
   const usuario = JSON.parse(localStorage.getItem("usuario"));
@@ -11,7 +13,7 @@ export default function Carrito() {
   // Clave estable del carrito
   const carritoKey = usuario ? `carrito_${usuario.id}` : "carrito_guest";
 
-  // Cargar carrito automáticamente
+  // Cargar carrito
   useEffect(() => {
     const cargarCarrito = () => {
       const carritoLocal = JSON.parse(localStorage.getItem(carritoKey)) || [];
@@ -21,10 +23,7 @@ export default function Carrito() {
 
     cargarCarrito();
 
-    // Actualizar cuando vuelves a la pestaña
     window.addEventListener("focus", cargarCarrito);
-
-    // Actualizar cuando otro componente modifique carrito
     const syncManual = () => cargarCarrito();
     window.addEventListener("storageUpdate", syncManual);
 
@@ -34,16 +33,13 @@ export default function Carrito() {
     };
   }, [carritoKey]);
 
-  // Guardar cambios y notificar a Header
+  // Guardar carrito
   const guardarCarrito = (nuevoCarrito) => {
     setCarrito(nuevoCarrito);
     localStorage.setItem(carritoKey, JSON.stringify(nuevoCarrito));
-
-    // Avisar a Header para que actualice el contador
     window.dispatchEvent(new Event("storageUpdate"));
   };
 
-  // Aumentar cantidad
   const aumentarCantidad = (id) => {
     const nuevo = carrito.map((item) =>
       item.id === id ? { ...item, cantidad: item.cantidad + 1 } : item
@@ -51,21 +47,48 @@ export default function Carrito() {
     guardarCarrito(nuevo);
   };
 
-  // Disminuir cantidad
   const disminuirCantidad = (id) => {
-    const nuevo = carrito
-      .map((item) =>
-        item.id === id
-          ? { ...item, cantidad: Math.max(1, item.cantidad - 1) }
-          : item
-      );
+    const nuevo = carrito.map((item) =>
+      item.id === id
+        ? { ...item, cantidad: Math.max(1, item.cantidad - 1) }
+        : item
+    );
     guardarCarrito(nuevo);
   };
 
-  // Eliminar item
   const eliminarItem = (id) => {
     const nuevo = carrito.filter((item) => item.id !== id);
     guardarCarrito(nuevo);
+  };
+
+  // 🚀 FUNCION PARA PROCESAR EL PAGO Y GUARDAR EN BACKEND
+  const procesarPago = async () => {
+    if (!usuario) {
+      alert("Debes iniciar sesión para completar la compra.");
+      return;
+    }
+
+    try {
+      for (const item of carrito) {
+        await axios.post("http://127.0.0.1:8000/api/carrito/", {
+          usuario: usuario.id,
+          libro: item.id,
+          cantidad: item.cantidad,
+        });
+      }
+
+      alert("¡Compra realizada con éxito!");
+
+      // Limpiar carrito
+      localStorage.removeItem(carritoKey);
+      setCarrito([]);
+      setMostrarPago(false);
+
+      window.dispatchEvent(new Event("storageUpdate"));
+    } catch (error) {
+      console.error("Error al procesar compra:", error);
+      alert("Hubo un error procesando el pago.");
+    }
   };
 
   if (loading) return <h2>Cargando carrito...</h2>;
@@ -106,7 +129,65 @@ export default function Carrito() {
 
       {carrito.length > 0 && (
         <div className="carrito-total">
-          <button className="btn-pagar">Proceder al pago</button>
+          <button className="btn-pagar" onClick={() => setMostrarPago(true)}>
+            Proceder al pago
+          </button>
+        </div>
+      )}
+
+      {/* FORMULARIO DE PAGO */}
+      {mostrarPago && (
+        <div className="pago-formulario">
+          <h2>Formulario de Pago</h2>
+
+          <form
+            className="form-pago"
+            onSubmit={(e) => {
+              e.preventDefault();
+              procesarPago();
+            }}
+          >
+            <label>Nombre completo</label>
+            <input type="text" placeholder="Tu nombre" required />
+
+            <label>Correo electrónico</label>
+            <input type="email" placeholder="tucorreo@email.com" required />
+
+            <label>Número de tarjeta</label>
+            <input
+              type="text"
+              placeholder="XXXX-XXXX-XXXX-XXXX"
+              maxLength="16"
+              required
+            />
+
+            <div className="fila">
+              <div>
+                <label>Expiración</label>
+                <input type="text" placeholder="MM/AA" maxLength="5" required />
+              </div>
+
+              <div>
+                <label>CVV</label>
+                <input
+                  type="password"
+                  placeholder="***"
+                  maxLength="3"
+                  required
+                />
+              </div>
+            </div>
+
+            <button className="btn-confirmar">Confirmar pago</button>
+
+            <button
+              type="button"
+              className="btn-cancelar"
+              onClick={() => setMostrarPago(false)}
+            >
+              Cancelar
+            </button>
+          </form>
         </div>
       )}
     </div>

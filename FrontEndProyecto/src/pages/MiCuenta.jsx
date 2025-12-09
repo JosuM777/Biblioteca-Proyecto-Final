@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import MisDatos from "../components/MisDatos";
-import MisLibros from "../components/MisLibros";
-import EditarPerfil from "../components/EditarPerfil";
+import Biblioteca from "../pages/Biblioteca";
 import "../styles/micuenta.css";
 
 export default function MiCuenta() {
@@ -24,7 +23,7 @@ export default function MiCuenta() {
         <h2>Mi Cuenta</h2>
         <ul>
           <li><a href="#datos">Mis Datos</a></li>
-          <li><a href="#libros">Mis Libros</a></li>
+          <li><a href="#libros">Libros Recomendados</a></li>
         </ul>
       </aside>
 
@@ -34,7 +33,7 @@ export default function MiCuenta() {
         </section>
 
         <section id="libros">
-          <MisLibros />
+          <Biblioteca />
         </section>
       </main>
     </div>

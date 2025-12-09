@@ -78,7 +78,6 @@ export default function Biblioteca() {
 
       {/* CONTENIDO */}
       <main className="rb-biblioteca-main">
-        <h1>Biblioteca ReBook</h1>
 
         {loading ? (
           <p className="rb-cargando">Cargando libros...</p>

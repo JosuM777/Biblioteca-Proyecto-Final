@@ -135,6 +135,76 @@
   background: #5f4ded;
 }
 
+.pago-formulario {
+  background: #fff;
+  padding: 25px;
+  margin-top: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  animation: fadeIn .3s ease;
+}
+
+.form-pago {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.form-pago input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #f8f8f8;
+  transition: .2s;
+}
+
+.form-pago input:focus {
+  border-color: #007bff;
+  background: white;
+}
+
+.fila {
+  display: flex;
+  gap: 15px;
+}
+
+.btn-confirmar {
+  background: #28a745;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: .2s;
+}
+
+.btn-confirmar:hover {
+  background: #218838;
+}
+
+.btn-cancelar {
+  margin-top: 5px;
+  background: #dc3545;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.btn-cancelar:hover {
+  background: #b52a37;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
 /* ------------------------------
    ANIMACIONES
 ------------------------------ */

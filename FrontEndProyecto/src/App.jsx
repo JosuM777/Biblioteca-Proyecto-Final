@@ -10,12 +10,12 @@ import CrearLibro from "./components/CrearLibro";
 import MiCuenta from "./pages/MiCuenta";
 import EditarPerfil from "./components/EditarPerfil";
 import AdminPage from "./pages/AdminPage";
-import LibroDetalle from "./pages/LibroDetalle";
+import LibroDetalle from "./components/LibroDetalle";
 import EditarLibro from "./components/EditarLibro";
 import CrearUsuario from "./components/CrearUsuario";
 import Libro from "./components/Libro";
 import Carrito from "./components/Carrito";
-import UsuarioPerfil from "./pages/UsuarioPerfil";
+import UsuarioPerfil from "./components/UsuarioPerfil";
 
 
 
