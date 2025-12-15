@@ -1,3 +1,4 @@
+from rest_framework.permissions import IsAuthenticated
 from .models import ContactoAutor
 from .serializers import ContactoAutorSerializer
 from .serializers import (
@@ -13,6 +14,7 @@ from django.contrib.auth import get_user_model, authenticate
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework_simplejwt.tokens import RefreshToken
 
 User = get_user_model()
 
@@ -23,8 +25,9 @@ class UsuarioCreateView(ListCreateAPIView):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
 
-
+from rest_framework.permissions import AllowAny
 class UsuarioDetailView(RetrieveUpdateDestroyAPIView):
+    permission_classes = [AllowAny]
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
     parser_classes = [MultiPartParser, FormParser]
@@ -72,7 +75,14 @@ class LoginView(APIView):
 
         if user is not None:
             serializer = UsuarioSerializer(user)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            token = RefreshToken.for_user(user).access_token
+            return Response(
+                {
+                    "user": serializer.data,
+                    "token": str(token)
+                },
+                status=status.HTTP_200_OK
+            )
         else:
             return Response({"error": "Credenciales Incorrectas"}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -212,7 +222,7 @@ class LibrosAlquiladosView(APIView):
 class LibrosIntercambiadosView(APIView):
     def get(self, request):
         return Response({"intercambiados": Intercambio.objects.count()})
-    
+
 
 class CompraCreateView(ListCreateAPIView):
     queryset = Compra.objects.all()

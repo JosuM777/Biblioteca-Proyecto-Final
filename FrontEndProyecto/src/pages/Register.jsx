@@ -24,7 +24,7 @@ export default function Register() {
       [e.target.name]: e.target.value,
     });
   }
-
+  // Envío del formulario al backend
   async function submit(e) {
     e.preventDefault();
     try {

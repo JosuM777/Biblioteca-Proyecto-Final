@@ -17,6 +17,7 @@ export default function CrearLibro() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
 
+  // cambios en el formulario
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
@@ -42,7 +43,7 @@ export default function CrearLibro() {
     for (const key in formData) {
       if (formData[key] !== null) data.append(key, formData[key]);
     }
-
+   // Envío de datos al backend
     try {
       await axios.post("http://localhost:8000/api/libros/", data, {
         headers: { "Content-Type": "multipart/form-data" },

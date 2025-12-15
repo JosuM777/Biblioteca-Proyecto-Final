@@ -7,7 +7,7 @@ export default function Home() {
   const [libros, setLibros] = useState([]);
   const [destacados, setDestacados] = useState([]);
 
-
+ // Carga inicial de libros
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/api/libros/")
       .then(res => {
@@ -37,7 +37,6 @@ export default function Home() {
 
   return (
     <div className="home-nuevo">
-      {/*HERO*/}
       <section className="hero-nuevo">
         <div className="hero-content">
           <h1 className="title">
@@ -59,21 +58,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/*GÉNEROS*/}
-      <section className="seccion">
-        <h2 className="titulo-seccion">Géneros Populares</h2>
-
-        <div className="genres-carousel">
-          {["Fantasía", "Romance", "Ciencia Ficción", "Misterio", "Comics", "Terror", "Histórico"]
-            .map((g, i) => (
-              <div key={i} className="genre-pill">
-                {g}
-              </div>
-            ))}
-        </div>
-      </section>
-
-      {/*  CARRUSEL PRINCIPAL*/}
       <section className="seccion">
         <h2 className="titulo-seccion">Recomendados</h2>
 
@@ -90,7 +74,6 @@ export default function Home() {
         </div>
       </section>
 
-{/* USUARIOS DESTACADOS */}
 <section className="seccion">
   <h2 className="titulo-seccion">Usuarios Destacados</h2>
 

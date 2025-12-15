@@ -6,10 +6,18 @@ import "../styles/header.css";
 export default function Header() {
   const navigate = useNavigate();
   const location = useLocation();
+  const [rol, setRol] = useState(null);
 
   const usuario = JSON.parse(localStorage.getItem("usuario"));
-  const rol = usuario?.rol || null;
-
+  
+  useEffect(()=>{
+    if (usuario) {
+      setRol(usuario.user.rol);
+    } else {
+      setRol(null);
+    }
+  }, [usuario]);
+  
   const [count, setCount] = useState(0);
 
   // Leer cantidad del carrito

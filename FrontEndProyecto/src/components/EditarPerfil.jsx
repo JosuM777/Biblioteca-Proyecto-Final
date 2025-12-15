@@ -14,7 +14,7 @@ export default function EditarPerfil() {
   });
   const [fotoPerfil, setFotoPerfil] = useState(null);
   const [preview, setPreview] = useState(null);
-  const navigate = useNavigate(); // ✅ Hook para redirección
+  const navigate = useNavigate(); //  Hook para redirección
 
   useEffect(() => {
     const data = localStorage.getItem("usuario");
@@ -75,7 +75,7 @@ export default function EditarPerfil() {
 
       localStorage.setItem("usuario", JSON.stringify(res.data));
       alert("Perfil actualizado exitosamente.");
-      navigate("/account"); // ✅ Redirección después de actualizar
+      navigate("/account"); //  Redirección después de actualizar
 
     } catch (error) {
       console.error("Error al actualizar perfil:", error.response?.data || error.message);

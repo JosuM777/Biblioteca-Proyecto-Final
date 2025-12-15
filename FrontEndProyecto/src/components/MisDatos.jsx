@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+//cdimport axios from "axios";
 
 export default function MisDatos() {
   const navigate = useNavigate();
   const [usuario, setUsuario] = useState(null);
 
-  const idUsuario = JSON.parse(localStorage.getItem("usuario")).id;
-
+  const idUsuario = JSON.parse(localStorage.getItem("usuario")).user.id;
+// Obtener datos del usuario
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/usuarios/${idUsuario}/`)
-      .then(res => setUsuario(res.data))
-      .catch(err => console.error("Error al cargar usuario:", err));
+    const traerUsuario = async() =>{
+      const peticion = await fetch(`http://127.0.0.1:8000/api/usuarios/${idUsuario}/`,{
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem("token")}`,
+          'Content-Type': 'application/json'
+        }
+      });
+      const data = await peticion.json();
+      setUsuario(data);
+    }
+    traerUsuario();
   }, [idUsuario]);
 
   const irEditarPerfil = () => navigate("/editar-perfil");

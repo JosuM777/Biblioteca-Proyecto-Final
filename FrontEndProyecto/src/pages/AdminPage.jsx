@@ -7,17 +7,14 @@ import "../styles/AdminPage.css";
 export default function AdminPage() {
   const navigate = useNavigate();
   const [tab, setTab] = useState("libros");
-
   const [libros, setLibros] = useState([]);
   const [usuarios, setUsuarios] = useState([]);
   const [alquilados, setAlquilados] = useState([]);
   const [vendidos, setVendidos] = useState([]);
   const [intercambios, setIntercambios] = useState([]);
-
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -25,6 +22,7 @@ export default function AdminPage() {
     cargarDatos();
   }, []);
 
+    // Obtiene todos los datos del backend
   const cargarDatos = async () => {
     try {
       setLoading(true);
@@ -41,7 +39,7 @@ export default function AdminPage() {
         axios.get("http://localhost:8000/api/vendidos/"),
         axios.get("http://localhost:8000/api/intercambios/")
       ]);
-
+  // Guardar resultados
       setLibros(resLibros.data);
       setUsuarios(resUsuarios.data);
       setAlquilados(resAlquilados.data);
@@ -55,7 +53,7 @@ export default function AdminPage() {
       setLoading(false);
     }
   };
-
+// Eliminar con confirmación
   const eliminarConConfirmacion = (id, tipo) => {
     if (!window.confirm(`¿Seguro que deseas eliminar este ${tipo}?`)) return;
 
@@ -121,7 +119,6 @@ export default function AdminPage() {
         />
       </div>
 
-// LIBROS
       {tab === "libros" && (
         <div>
           <button className="adminp-btn-crear" onClick={() => navigate("/crear-libro")}>
@@ -141,7 +138,6 @@ export default function AdminPage() {
         </div>
       )}
 
-// USUARIOS
       {tab === "usuarios" && (
         <div>
           <button className="adminp-btn-crear" onClick={() => navigate("/crear-usuario")}>
@@ -174,7 +170,6 @@ export default function AdminPage() {
         </div>
       )}
 
-// ALQUILADOS
       {tab === "alquilados" && (
         <div>
           <h2 className="adminp-subtitle">Libros Alquilados</h2>
@@ -201,7 +196,6 @@ export default function AdminPage() {
         </div>
       )}
 
-// VENDIDOS
       {tab === "vendidos" && (
         <div>
           <h2 className="adminp-subtitle">Libros Vendidos</h2>
@@ -228,7 +222,6 @@ export default function AdminPage() {
         </div>
       )}
 
-// INTERCAMBIOS
       {tab === "intercambios" && (
         <div>
           <h2 className="adminp-subtitle">Intercambios Realizados</h2>
@@ -258,7 +251,6 @@ export default function AdminPage() {
         </div>
       )}
 
-// PAGINACIÓN
       <div className="adminp-pagination">
         {Array.from({
           length: Math.ceil(

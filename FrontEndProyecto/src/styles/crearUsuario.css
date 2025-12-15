@@ -1,0 +1,114 @@
+/* ===== Contenedor ===== */
+.crearusuario-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #f5f7fa, #e4ecf7);
+  padding: 30px;
+}
+
+/* ===== Card ===== */
+.crearusuario-card {
+  background: #ffffff;
+  padding: 35px;
+  width: 100%;
+  max-width: 480px;
+  border-radius: 18px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+  animation: fadeUp 0.5s ease;
+}
+
+/* ===== Título ===== */
+.crearusuario-title {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 2rem;
+  color: #333;
+}
+
+/* ===== Error ===== */
+.crearusuario-error {
+  background: #ffe0e0;
+  color: #b00020;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* ===== Formulario ===== */
+.crearusuario-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.crearusuario-form label {
+  font-weight: 600;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+.crearusuario-form input,
+.crearusuario-form select {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+.crearusuario-form input:focus,
+.crearusuario-form select:focus {
+  border-color: #4e73df;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(78, 115, 223, 0.2);
+}
+
+/* ===== Botón ===== */
+.crearusuario-btn {
+  margin-top: 20px;
+  background: linear-gradient(135deg, #4e73df, #1e3fc9);
+  color: white;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  transition: 0.3s ease;
+  box-shadow: 0 10px 25px rgba(78, 115, 223, 0.4);
+}
+
+.crearusuario-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(78, 115, 223, 0.5);
+}
+
+.crearusuario-btn:active {
+  transform: scale(0.97);
+}
+
+/* ===== Animación ===== */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 500px) {
+  .crearusuario-card {
+    padding: 25px;
+  }
+
+  .crearusuario-title {
+    font-size: 1.7rem;
+  }
+}

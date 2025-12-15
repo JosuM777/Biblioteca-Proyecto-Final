@@ -13,15 +13,23 @@ export default function UsuarioPerfil() {
     mensaje: "",
     autor: id,
   });
-
+ // Cargar datos del usuario y sus libros
   useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
     axios
-      .get(`http://127.0.0.1:8000/api/usuarios/${id}/`)
+      .get(`http://127.0.0.1:8000/api/usuarios/${id}/`, config)
       .then((res) => setUsuario(res.data))
       .catch((err) => console.error(err));
 
     axios
-      .get(`http://127.0.0.1:8000/api/libros/?autor=${id}`)
+      .get(`http://127.0.0.1:8000/api/libros/?autor=${id}`, config)
       .then((res) => setLibrosAutor(res.data))
       .catch((err) => console.error(err));
   }, [id]);
@@ -32,6 +40,7 @@ export default function UsuarioPerfil() {
 
   const enviarMensaje = (e) => {
     e.preventDefault();
+
     axios
       .post("http://127.0.0.1:8000/api/contacto-autor/", formData)
       .then(() => alert("Mensaje enviado correctamente"))
@@ -40,71 +49,82 @@ export default function UsuarioPerfil() {
 
   if (!usuario) return <h2>Cargando...</h2>;
 
+  const esAutor = usuario.rol === "autor";
+
   return (
     <div className="perfil-container">
 
-      {/* INFO DEL USUARIO Y FORMULARIO */}
       <div className="perfil-left">
-
-        {/* PERFIL */}
         <div className="perfil-info">
           <img src={usuario.foto_perfil} className="perfil-img" />
           <h1 className="perfil-username">{usuario.username}</h1>
           <p className="perfil-email">{usuario.email}</p>
           <p className="perfil-rol">
-            <strong>Ocupación:</strong> {usuario.rol}
+            <strong>Rol:</strong> {usuario.rol}
           </p>
         </div>
 
-        {/* FORMULARIO */}
-        <form className="perfil-form" onSubmit={enviarMensaje}>
-          <h2>Contactar al autor</h2>
+        {esAutor && (
+          <form className="perfil-form" onSubmit={enviarMensaje}>
+            <h2>Contactar al autor</h2>
 
-          <input
-            type="text"
-            name="nombre"
-            placeholder="Tu nombre"
-            onChange={handleChange}
-            required
-          />
+            <input
+              type="text"
+              name="nombre"
+              placeholder="Tu nombre"
+              onChange={handleChange}
+              required
+            />
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Tu correo"
-            onChange={handleChange}
-            required
-          />
+            <input
+              type="email"
+              name="email"
+              placeholder="Tu correo"
+              onChange={handleChange}
+              required
+            />
 
-          <textarea
-            name="mensaje"
-            placeholder="Escribe tu mensaje..."
-            rows="4"
-            onChange={handleChange}
-            required
-          ></textarea>
+            <textarea
+              name="mensaje"
+              placeholder="Escribe tu mensaje..."
+              rows="4"
+              onChange={handleChange}
+              required
+            ></textarea>
 
-          <button type="submit">Enviar mensaje</button>
-        </form>
-      </div>
-
-      {/* LIBROS DEL AUTOR */}
-      <div className="perfil-libros">
-        <h2>Libros creados por este autor</h2>
-
-        {librosAutor.length === 0 ? (
-          <p className="sin-libros">Este autor no tiene libros publicados.</p>
-        ) : (
-          <div className="libros-grid">
-            {librosAutor.map((libro) => (
-              <div key={libro.id} className="libro-card">
-                <img src={libro.imagen} alt={libro.titulo} className="libro-img" />
-                <h3>{libro.titulo}</h3>
-              </div>
-            ))}
-          </div>
+            <button type="submit">Enviar mensaje</button>
+          </form>
         )}
       </div>
+
+      {esAutor && (
+        <div className="perfil-libros">
+          <h2>Libros creados por este autor</h2>
+
+          {librosAutor.length === 0 ? (
+            <p className="sin-libros">Este autor no tiene libros publicados.</p>
+          ) : (
+            <div className="libros-grid">
+              {librosAutor.map((libro) => (
+                <div key={libro.id} className="libro-card">
+                  <img
+                    src={libro.imagen}
+                    alt={libro.titulo}
+                    className="libro-img"
+                  />
+                  <h3>{libro.titulo}</h3>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {!esAutor && (
+        <div className="perfil-no-autor">
+          <p>Este usuario no es autor y no tiene libros publicados.</p>
+        </div>
+      )}
     </div>
   );
 }

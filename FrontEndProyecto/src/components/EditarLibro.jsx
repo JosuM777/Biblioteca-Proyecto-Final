@@ -19,7 +19,7 @@ export default function EditarLibro() {
 
   const [imagenFile, setImagenFile] = useState(null);
   const [imagenPreview, setImagenPreview] = useState(null);
-
+ // Cargar datos del libro al montar el componente
   useEffect(() => {
     axios
       .get(`http://localhost:8000/api/libros/${id}/`)

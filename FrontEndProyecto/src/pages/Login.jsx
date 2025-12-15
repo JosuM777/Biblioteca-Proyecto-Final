@@ -19,6 +19,7 @@ export default function Login() {
 
       // Guarda usuario completo
       localStorage.setItem("usuario", JSON.stringify(res.data));
+      localStorage.setItem("token", res.data.token);
 
       alert("Inicio de sesión exitoso ");
       navigate("/account");

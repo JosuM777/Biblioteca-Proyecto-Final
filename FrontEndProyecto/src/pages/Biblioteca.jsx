@@ -12,7 +12,7 @@ export default function Biblioteca() {
     genero: "",
     estado: "",
   });
-
+ // Carga inicial de libros
   useEffect(() => {
     axios
       .get("http://localhost:8000/api/libros/")
@@ -20,7 +20,7 @@ export default function Biblioteca() {
       .catch((err) => console.error("Error cargando libros:", err))
       .finally(() => setLoading(false));
   }, []);
-
+// Aplicar filtros
   const librosFiltrados = libros.filter((libro) => {
     const txt = filtro.busqueda.toLowerCase();
     const coincideBusqueda =
@@ -33,7 +33,7 @@ export default function Biblioteca() {
       filtro.estado === "" || libro.estado === filtro.estado;
     return coincideBusqueda && coincideGenero && coincideEstado;
   });
-
+ // Obtener géneros únicos para el filtro
   const generosUnicos = [...new Set(libros.map((l) => l.genero))]
     .filter((g) => g && g !== "")
     .sort();
@@ -41,7 +41,6 @@ export default function Biblioteca() {
   return (
     <div className="rb-biblioteca-layout">
       
-      {/* SIDEBAR */}
       <aside className="rb-sidebar-filtros">
         <h2>Filtros</h2>
 
@@ -76,7 +75,6 @@ export default function Biblioteca() {
         </select>
       </aside>
 
-      {/* CONTENIDO */}
       <main className="rb-biblioteca-main">
 
         {loading ? (

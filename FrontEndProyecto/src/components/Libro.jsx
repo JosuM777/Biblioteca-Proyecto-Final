@@ -25,7 +25,7 @@ export default function LibroDetalles() {
 
   if (!libro) return <h2 className="cargando">Cargando...</h2>;
 
-  // 🔥 AGREGAR AL CARRITO CON CANTIDAD
+  // AGREGAR AL CARRITO CON CANTIDAD
   const agregarCarrito = () => {
     if (!usuario) {
       alert("Debe iniciar sesión para agregar libros al carrito");
@@ -45,7 +45,7 @@ export default function LibroDetalles() {
           : item
       );
     } else {
-      // NO EXISTE → agregar con cantidad 1
+      // NO EXISTE - agregar con cantidad 1
       nuevoCarrito = [
         ...carritoLocal,
         {
@@ -83,11 +83,10 @@ export default function LibroDetalles() {
             {libro.descripcion}
           </p>
 
-          <div className="acciones">
-            <button onClick={agregarCarrito}>Agregar al carrito</button>
-            <button className="btn intercambiar">Intercambiar</button>
-            <button className="btn alquilar">Alquilar</button>
-          </div>
+          <button className="btn agregar-carrito" onClick={agregarCarrito}>
+            Agregar al carrito
+          </button>
+
 
           <button className="btn volver" onClick={() => navigate("/biblioteca")}>
             ← Volver

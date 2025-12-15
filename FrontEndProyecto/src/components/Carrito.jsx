@@ -9,10 +9,8 @@ export default function Carrito() {
 
   // Usuario actual
   const usuario = JSON.parse(localStorage.getItem("usuario"));
-
   // Clave estable del carrito
   const carritoKey = usuario ? `carrito_${usuario.id}` : "carrito_guest";
-
   // Cargar carrito
   useEffect(() => {
     const cargarCarrito = () => {
@@ -22,7 +20,7 @@ export default function Carrito() {
     };
 
     cargarCarrito();
-
+// Sincronizar en foco y cambios externos
     window.addEventListener("focus", cargarCarrito);
     const syncManual = () => cargarCarrito();
     window.addEventListener("storageUpdate", syncManual);
@@ -61,7 +59,7 @@ export default function Carrito() {
     guardarCarrito(nuevo);
   };
 
-  // 🚀 FUNCION PARA PROCESAR EL PAGO Y GUARDAR EN BACKEND
+  // FUNCION PARA PROCESAR EL PAGO Y GUARDAR EN BACKEND
   const procesarPago = async () => {
     if (!usuario) {
       alert("Debes iniciar sesión para completar la compra.");
@@ -135,7 +133,6 @@ export default function Carrito() {
         </div>
       )}
 
-      {/* FORMULARIO DE PAGO */}
       {mostrarPago && (
         <div className="pago-formulario">
           <h2>Formulario de Pago</h2>
